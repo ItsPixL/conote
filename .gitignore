@@ -1,0 +1,43 @@
+# Python
+*.pyc
+*.pyo
+__pycache__/
+*.pyd
+env/
+venv/
+*.sqlite3
+*.db
+*.log
+
+# Flask application-specific
+instance/
+.webassets-cache
+*.egg-info/
+
+# React (Node.js)
+node_modules/
+build/
+*.log
+*.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# VS Code settings (if you use VS Code)
+.vscode/
+
+# macOS specific
+.DS_Store
+
+# Windows specific
+Thumbs.db
+
+# JetBrains IDEs (e.g., PyCharm)
+.idea/
+
+# dotenv files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
