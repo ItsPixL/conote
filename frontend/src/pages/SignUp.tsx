@@ -3,10 +3,6 @@ import SignUpForm from "../components/SignUpForm";
 import "./SignUp.css";
 
 export const SignUp = () => {
-  const onSuccess = () => {
-    console.log("Success");
-  };
-
   return (
     <div className="sign-up-page">
       <div className="sign-up-box">
@@ -17,7 +13,7 @@ export const SignUp = () => {
             Already have an account? <a>Log In</a>
           </p>
         </div>
-        <SignUpForm onSuccess={onSuccess} />
+        <SignUpForm />
       </div>
     </div>
   );

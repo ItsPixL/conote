@@ -1,31 +1,61 @@
+import { AxiosError } from "axios";
 import React, { useState } from "react";
-import { signup } from "../utils/api";
-import { type SignupFormProps, type SignUpData } from "../utils/types";
+import api from "../utils/api";
+import { type SignUpData } from "../utils/types";
 
-const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
+// Define a type for the expected error response structure
+interface ErrorResponse {
+  message: string;
+}
+
+const SignupForm = () => {
+  const [error, setError] = useState<string>("");
   const [formData, setFormData] = useState<SignUpData>({
     username: "",
-    firstName: "",
-    lastName: "",
     email: "",
     password: "",
   });
-  const [error, setError] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const isAxiosError = (err: unknown): err is AxiosError => {
+    return (err as AxiosError).isAxiosError !== undefined;
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
+
     try {
-      await signup(formData);
-      onSuccess();
-    } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-          "Sorry, but your signup failed. Please try again another time."
-      );
+      const res = await api.post("/auth/signup", formData);
+      console.log("Signup success:", res.data);
+      alert("Sign up successful!"); // CHANGE THIS LATER
+    } catch (err: unknown) {
+      console.error("Signup error:", err);
+
+      // Check if the error is an AxiosError
+      if (isAxiosError(err) && err.response?.data) {
+        const errorData = err.response.data as ErrorResponse;
+        const errorMessage = errorData.message;
+
+        if (errorMessage === "Email already exists") {
+          setError(
+            "This email is already registered. Please use a different one."
+          );
+        } else if (errorMessage === "Username already exists") {
+          setError(
+            "This username is already taken. Please choose another one."
+          );
+        } else {
+          setError(
+            "An error occurred while signing up. Please try again later."
+          );
+        }
+      } else {
+        setError("An unknown error occurred.");
+      }
     }
   };
 
@@ -36,18 +66,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
         placeholder="Username"
         value={formData.username}
         onChange={handleChange}
-      />
-      <input
-        name="firstName"
-        placeholder="First Name"
-        value={formData.firstName}
-        onChange={handleChange}
-      />
-      <input
-        name="lastName"
-        placeholder="Last Name"
-        value={formData.lastName}
-        onChange={handleChange}
+        required
       />
       <input
         name="email"
@@ -55,6 +74,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
         placeholder="Email"
         value={formData.email}
         onChange={handleChange}
+        required
       />
       <input
         name="password"
@@ -62,6 +82,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
         placeholder="Password"
         value={formData.password}
         onChange={handleChange}
+        required
       />
       <button type="submit">Sign Up</button>
       <p className="declaration">
