@@ -11,6 +11,6 @@ def dashboard():
     user = User.query.filter_by(email=current_user_email).first()
     return jsonify({
         "success": True,
-        "message": f"Welcome back, {user.firstName}!",
+        "message": f"Welcome back, {user.username}!",
         "user": user.to_dict()
     })
