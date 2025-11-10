@@ -1,8 +1,9 @@
-import { type SignUpData } from "./types";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api", // adjust for backend
+  baseURL: "http://127.0.0.1:5000", // backend URL
+  withCredentials: false,
+  timeout: 10000,
 });
 
-export const signup = (data: SignUpData) => api.post("/auth/signup", data);
+export default api;
