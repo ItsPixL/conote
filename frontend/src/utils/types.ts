@@ -9,3 +9,15 @@ export interface SignUpData {
   email: string;
   password: string;
 }
+
+export interface User {
+  username: string;
+  email?: string;
+}
+
+export interface AuthContextType {
+  user: User | null;
+  token: string | null;
+  login: (jwt: string, userData: User) => void;
+  logout: () => void;
+}
