@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
+from datetime import datetime, timezone
 
 db = SQLAlchemy()
 
@@ -34,8 +34,8 @@ class Note(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     title = db.Column(db.String(50))
     content = db.Column(db.Text)
-    createdTime = db.Column(db.DateTime, default=datetime.now())
-    updatedTime = db.Column(db.DateTime, default=datetime.now())
+    createdTime = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    updatedTime = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     permissions = db.relationship('Permission', backref='note', lazy=True)
     versions = db.relationship('Version', backref='note', lazy=True)
 
@@ -70,7 +70,7 @@ class Version(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     note_id = db.Column(db.Integer, db.ForeignKey('notes.id'), nullable=False)
     content_snapshot = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime, default=datetime.now())
+    timestamp = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     def to_dict(self):
         return {
