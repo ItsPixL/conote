@@ -12,8 +12,6 @@ const SignupForm = () => {
   const [error, setError] = useState<string>("");
   const [formData, setFormData] = useState<SignUpData>({
     username: "",
-    firstName: "",
-    lastName: "",
     email: "",
     password: "",
   });
@@ -67,18 +65,6 @@ const SignupForm = () => {
         value={formData.username}
         onChange={handleChange}
         required
-      />
-      <input
-        name="firstName"
-        placeholder="First Name"
-        value={formData.firstName}
-        onChange={handleChange}
-      />
-      <input
-        name="lastName"
-        placeholder="Last Name"
-        value={formData.lastName}
-        onChange={handleChange}
       />
       <input
         name="email"
