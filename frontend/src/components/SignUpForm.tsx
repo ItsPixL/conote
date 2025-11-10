@@ -22,7 +22,10 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
       await signup(formData);
       onSuccess();
     } catch (err: any) {
-      setError(err.response?.data?.message || "Signup failed");
+      setError(
+        err.response?.data?.message ||
+          "Sorry, but your signup failed. Please try again another time."
+      );
     }
   };
 
@@ -32,6 +35,18 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
         name="username"
         placeholder="Username"
         value={formData.username}
+        onChange={handleChange}
+      />
+      <input
+        name="firstName"
+        placeholder="First Name"
+        value={formData.firstName}
+        onChange={handleChange}
+      />
+      <input
+        name="lastName"
+        placeholder="Last Name"
+        value={formData.lastName}
         onChange={handleChange}
       />
       <input
@@ -49,7 +64,15 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
         onChange={handleChange}
       />
       <button type="submit">Sign Up</button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <p className="declaration">
+        By clicking "Sign up", you are agreeing to CoNote's Privacy Policy and
+        Terms and Conditions.
+      </p>
+      {error && (
+        <p style={{ color: "red" }} className="error">
+          {error}
+        </p>
+      )}
     </form>
   );
 };
