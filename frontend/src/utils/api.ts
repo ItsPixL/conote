@@ -1,5 +1,8 @@
-import { type FormData } from "./types";
+import { type SignUpData } from "./types";
+import axios from "axios";
 
-export const signup = (formData: FormData) => {
-  return formData;
-};
+const api = axios.create({
+  baseURL: "http://localhost:5000/api", // adjust for backend
+});
+
+export const signup = (data: SignUpData) => api.post("/auth/signup", data);

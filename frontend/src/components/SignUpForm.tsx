@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { signup } from "../utils/api";
-import { type SignupFormProps, type FormData } from "../utils/types";
+import { type SignupFormProps, type SignUpData } from "../utils/types";
 
 const SignupForm: React.FC<SignupFormProps> = ({ onSuccess }) => {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<SignUpData>({
     username: "",
     firstName: "",
     lastName: "",

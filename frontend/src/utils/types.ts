@@ -2,7 +2,7 @@ export interface SignupFormProps {
   onSuccess: () => void;
 }
 
-export interface FormData {
+export interface SignUpData {
   username: string;
   firstName: string;
   lastName: string;
