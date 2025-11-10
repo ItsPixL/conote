@@ -26,10 +26,12 @@ const SignupForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
 
     try {
       const res = await api.post("/auth/signup", formData);
       console.log("Signup success:", res.data);
+      alert("Sign up successful!"); // CHANGE THIS LATER
     } catch (err: unknown) {
       console.error("Signup error:", err);
 
