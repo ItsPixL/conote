@@ -1,0 +1,11 @@
+flask
+flask-socketio
+flask-cors
+flask_sqlalchemy
+flask_jwt_extended
+werkzeug
+datetime
+sqlalchemy
+psycopg2-binary 
+PyJWT
+pytest
