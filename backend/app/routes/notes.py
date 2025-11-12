@@ -11,9 +11,11 @@ notes_bp = Blueprint("main", __name__)
 def get_user_notes():
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).first()
+
     if not user:
         return jsonify({"success": False, "message": "User not found"}), 404
     user_notes = [note.to_dict() for note in user.notes]
+
     return jsonify({
         "success": True,
         "message": f"Welcome back, {user.username}!",
@@ -39,7 +41,7 @@ def get_single_note(note_id):
         "note": note.to_dict()
     }), 200
 
-@notes_bp.route("/<int:note_id>", methods=["PUT"])
+@notes_bp.route("/<int:note_id>", methods=["PATCH"])
 @jwt_required()
 def update_note(note_id):
     current_user_email = get_jwt_identity()
@@ -56,7 +58,6 @@ def update_note(note_id):
     note.title = data.get("title", note.title)
     note.content = data.get("content", note.content)
     note.updatedTime = datetime.now(timezone.utc)
-
     db.session.commit()
 
     return jsonify({
