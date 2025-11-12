@@ -44,7 +44,7 @@ class Note(db.Model):
             "title": self.title,
             "content": self.content,
             "createdTime": self.createdTime,
-            "updatedTime": self.updatedTime,
+            "updatedTime": self.updatedTime
         }
 
 class Permission(db.Model):
