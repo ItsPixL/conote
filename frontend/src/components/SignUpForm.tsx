@@ -1,12 +1,7 @@
 import { AxiosError } from "axios";
 import React, { useState } from "react";
 import api from "../utils/api";
-import { type SignUpData } from "../utils/types";
-
-// Define a type for the expected error response structure
-interface ErrorResponse {
-  message: string;
-}
+import { type SignUpData, type ErrorResponse } from "../utils/types";
 
 const SignupForm = () => {
   const [error, setError] = useState<string>("");
