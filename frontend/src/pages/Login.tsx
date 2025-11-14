@@ -2,7 +2,7 @@
 import LoginForm from "../components/LoginForm";
 import "./SignUp.css";
 
-export const Login = () => {
+const Login = () => {
   return (
     <div className="sign-up-page">
       <div className="sign-up-box">
@@ -18,3 +18,5 @@ export const Login = () => {
     </div>
   );
 };
+
+export default Login

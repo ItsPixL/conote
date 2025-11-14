@@ -2,7 +2,7 @@
 import SignUpForm from "../components/SignUpForm";
 import "./SignUp.css";
 
-export const SignUp = () => {
+const SignUp = () => {
   return (
     <div className="sign-up-page">
       <div className="sign-up-box">
@@ -18,3 +18,5 @@ export const SignUp = () => {
     </div>
   );
 };
+
+export default SignUp
