@@ -30,7 +30,7 @@ def register():
 def login():
     data = request.get_json()
     user = User.query.filter_by(email=data.get("email")).first()
-    if not user or user.check_password(data.get("password")):
+    if not user or not user.check_password(data.get("password")):
         return jsonify({"success": False, "message": "Invalid credentials"}), 401
 
     token = create_access_token(identity=user.email)
