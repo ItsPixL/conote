@@ -1,19 +1,37 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider, RequireAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import NavBar from "./components/Navbar";
 import Home from "./pages/Home";
+import Notes from "./pages/Notes";
 
 export const App = () => {
   return (
-    <Router>
-      <NavBar />
-      <Routes>
-        <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <NavBar />
+        <Routes>
+          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route
+            path="/notes"
+            element={
+              <RequireAuth>
+                <Notes />
+              </RequireAuth>
+            }
+          />
+          <Route path="*" element={<Navigate to="/home" />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 };
 

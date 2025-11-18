@@ -38,7 +38,9 @@ const LoginForm = () => {
         } else if (errorMessage === "User not found") {
           setError("No account found with this email.");
         } else {
-          setError("An error occurred while logging in. Please try again later.");
+          setError(
+            "An error occurred while logging in. Please try again later."
+          );
         }
       } else {
         setError("An unknown error occurred.");
@@ -66,7 +68,8 @@ const LoginForm = () => {
       />
       <button type="submit">Log In</button>
       <p className="declaration">
-        By clicking "Log in", you agree to CoNote's Privacy Policy and Terms and Conditions.
+        By clicking "Log in", you agree to CoNote's Privacy Policy and Terms and
+        Conditions.
       </p>
       {error && (
         <p style={{ color: "red" }} className="error">
