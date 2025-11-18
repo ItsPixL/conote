@@ -81,8 +81,8 @@ const SignupForm = () => {
       />
       <button type="submit">Sign Up</button>
       <p className="declaration">
-        By clicking "Sign up", you are agreeing to CoNote's Privacy Policy and
-        Terms and Conditions.
+        By clicking "Sign Up", you agree to CoNote's Privacy Policy and Terms
+        and Conditions.
       </p>
       {error && (
         <p style={{ color: "red" }} className="error">

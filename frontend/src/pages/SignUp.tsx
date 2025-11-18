@@ -1,8 +1,14 @@
-// import React from "react";
+import { useNavigate } from "react-router-dom";
 import SignUpForm from "../components/SignUpForm";
 import "./SignUp.css";
 
 const SignUp = () => {
+  const navigate = useNavigate();
+  const redirect = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    navigate("/login");
+  };
+
   return (
     <div className="sign-up-page">
       <div className="sign-up-box">
@@ -10,7 +16,7 @@ const SignUp = () => {
           <h1>Sign Up</h1>
           <p>Create an account to use CoNote!</p>
           <p>
-            Already have an account? <a>Log In</a>
+            Already have an account? <a onClick={redirect}>Log In</a>
           </p>
         </div>
         <SignUpForm />
@@ -19,4 +25,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp
+export default SignUp;

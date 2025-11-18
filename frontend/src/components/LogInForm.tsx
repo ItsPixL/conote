@@ -78,7 +78,7 @@ const LoginForm = () => {
       />
       <button type="submit">Log In</button>
       <p className="declaration">
-        By clicking "Log in", you agree to CoNote's Privacy Policy and Terms and
+        By clicking "Log In", you agree to CoNote's Privacy Policy and Terms and
         Conditions.
       </p>
       {error && (

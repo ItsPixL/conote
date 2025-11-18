@@ -1,11 +1,16 @@
-import { createContext, useState, useEffect, useContext } from "react";
+// ./context/AuthContext.tsx
+
+// Imports
+import { createContext, useState, useEffect, useContext, useMemo } from "react";
 import { type User, type AuthContextType } from "../utils/types";
 import { Navigate } from "react-router-dom";
 
+// Create AuthContext
 export const AuthContext = createContext<AuthContextType | undefined>(
   undefined
 );
 
+// Create Auth Provider
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -14,6 +19,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     localStorage.getItem("token") ?? ""
   );
 
+  // Fetch profile if token exists
   useEffect(() => {
     if (token) {
       // FETCH USER PROFILE HERE ------------------------------------------------------------------ IMPORTANT
@@ -21,25 +27,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [token]);
 
+  // Login function
   const login = (jwt: string, userData: User) => {
     localStorage.setItem("token", jwt);
     setToken(jwt);
     setUser(userData);
   };
 
+  // Logout function
   const logout = () => {
     localStorage.removeItem("token");
     setToken("");
     setUser({ username: "" });
   };
 
-  return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  // Provide consumers with user, token, login, logout
+  const value = useMemo(() => ({ user, token, login, logout }), [user, token]);
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
+// Create Auth Required wrapper for consumers
 export const RequireAuth: React.FC<{ children: React.ReactElement }> = ({
   children,
 }) => {
