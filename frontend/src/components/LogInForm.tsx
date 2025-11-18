@@ -1,7 +1,9 @@
 import { AxiosError } from "axios";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../utils/api";
-import { type LoginData, type ErrorResponse } from "../utils/types";
+import { type LoginData, type ErrorResponse, type User } from "../utils/types";
+import { AuthContext } from "../context/AuthContext";
 
 const LoginForm = () => {
   const [error, setError] = useState<string>("");
@@ -9,6 +11,9 @@ const LoginForm = () => {
     email: "",
     password: "",
   });
+
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,8 +29,13 @@ const LoginForm = () => {
 
     try {
       const res = await api.post("/auth/login", formData);
-      console.log("Login success:", res.data);
-      alert("Login successful!"); // CHANGE THIS LATER (e.g., redirect)
+      const { token, user } = res.data as {
+        token: string;
+        user: User;
+      };
+
+      auth?.login(token, user);
+      navigate("/notes");
     } catch (err: unknown) {
       console.error("Login error:", err);
 

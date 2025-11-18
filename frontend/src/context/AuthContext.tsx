@@ -9,14 +9,14 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token")
+  const [user, setUser] = useState<User>({ username: "demo" });
+  const [token, setToken] = useState<string>(
+    localStorage.getItem("token") ?? ""
   );
 
   useEffect(() => {
     if (token) {
-      // Fetch user profile with token if needed
+      // FETCH USER PROFILE HERE ------------------------------------------------------------------ IMPORTANT
       setUser({ username: "demo" });
     }
   }, [token]);
@@ -29,8 +29,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout = () => {
     localStorage.removeItem("token");
-    setToken(null);
-    setUser(null);
+    setToken("");
+    setUser({ username: "" });
   };
 
   return (

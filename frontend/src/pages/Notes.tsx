@@ -1,9 +1,12 @@
+import { useAuth } from "../hooks/useAuth";
+
 const Notes = () => {
-  const username = "";
+  const auth = useAuth();
 
   return (
     <div>
-      <h1>Welcome Back, {username}</h1>
+      <span>Welcome, {auth.user.username}</span>
+      <button onClick={auth.logout}>Logout</button>
     </div>
   );
 };
