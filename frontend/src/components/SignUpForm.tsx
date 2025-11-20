@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import React, { useState } from "react";
-import api from "../utils/api";
+import { authApi } from "../utils/api";
 import { type SignUpData, type ErrorResponse } from "../utils/types";
 
 const SignupForm = () => {
@@ -24,7 +24,7 @@ const SignupForm = () => {
     setError("");
 
     try {
-      const res = await api.post("/auth/signup", formData);
+      const res = await authApi.post("/auth/signup", formData);
       console.log("Signup success:", res.data);
       alert("Sign up successful!"); // CHANGE THIS LATER
     } catch (err: unknown) {

@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../utils/api";
+import { authApi } from "../utils/api";
 import { type LoginData, type ErrorResponse, type User } from "../utils/types";
 import { AuthContext } from "../context/AuthContext";
 
@@ -28,7 +28,7 @@ const LoginForm = () => {
     setError("");
 
     try {
-      const res = await api.post("/auth/login", formData);
+      const res = await authApi.post("/auth/login", formData);
       const { token, user } = res.data as {
         token: string;
         user: User;
