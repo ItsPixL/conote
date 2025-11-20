@@ -11,6 +11,7 @@ CORS(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.sqlite3"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = "shivansh"
+app.config['JWT_SECRET_KEY'] = 'jwt-secret'
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=5)
 socketio = SocketIO(app)
 
