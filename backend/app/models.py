@@ -61,6 +61,17 @@ class Permission(db.Model):
             "noteId": self.note_id,
             "permission": self.permission
         }
+    
+    def level(self):
+        match self.permission:
+            case "read":
+                return 1
+            case "edit":
+                return 2
+            case "owner":
+                return 3
+            case _:
+                return 0
 
 
 class Version(db.Model):
