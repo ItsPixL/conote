@@ -19,8 +19,8 @@ export interface User {
 }
 
 export interface AuthContextType {
-  user: User | null;
-  token: string | null;
+  user: User;
+  token: string;
   login: (jwt: string, userData: User) => void;
   logout: () => void;
 }
