@@ -1,0 +1,33 @@
+nav {
+  width: 80vw;
+  background-color: var(--bg-accent);
+  margin: 1.5rem auto;
+  border-radius: 1rem;
+  border: 0.125rem solid var(--accent-1);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-left: 2rem;
+}
+
+.links {
+  display: flex;
+  gap: 2rem;
+  margin-right: 2rem;
+}
+
+.link,
+.logo {
+  text-decoration: none;
+  color: var(--text-dark);
+}
