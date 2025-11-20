@@ -34,9 +34,9 @@ def get_user_notes():
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).first()
     
-    validate_data = validate(user=user)
-    if not validate_data:
-        return jsonify({"success": False, "message": validate_data["message"]}), validate_data["status"]
+    validate_errors = validate(user=user)
+    if validate_errors:
+        return jsonify({"success": False, "message": validate_errors["message"]}), validate_errors["status"]
     
     user_notes = [note.to_dict() for note in user.notes]
 
@@ -55,9 +55,9 @@ def get_single_note(note_id):
     user = User.query.filter_by(email=current_user_email).first()
     note = Note.query.filter_by(id=note_id, user_id=user.id).first()
 
-    validate_data = validate(user=user, note=note)
-    if not validate_data:
-        return jsonify({"success": False, "message": validate_data["message"]}), validate_data["status"]
+    validate_errors = validate(user=user, note=note)
+    if validate_errors:
+        return jsonify({"success": False, "message": validate_errors["message"]}), validate_errors["status"]
 
     return jsonify({
         "success": True,
@@ -72,9 +72,9 @@ def update_note(note_id):
     user = User.query.filter_by(email=current_user_email).first()
     note = Note.query.filter_by(id=note_id, user_id=user.id).first()
 
-    validate_data = validate(user=user, note=note)
-    if not validate_data:
-        return jsonify({"success": False, "message": validate_data["message"]}), validate_data["status"]
+    validate_errors = validate(user=user, note=note)
+    if validate_errors:
+        return jsonify({"success": False, "message": validate_errors["message"]}), validate_errors["status"]
     
     if not check_edit_permission(note, user):
         return jsonify({"success": False, "message": "Access denied"}), 403
@@ -105,9 +105,9 @@ def delete_note(note_id):
     user = User.query.filter_by(email=current_user_email).first()
     note = Note.query.filter_by(id=note_id, user_id=user.id).first()
 
-    validate_data = validate(user=user, note=note)
-    if not validate_data:
-        return jsonify({"success": False, "message": validate_data["message"]}), validate_data["status"]
+    validate_errors = validate(user=user, note=note)
+    if validate_errors:
+        return jsonify({"success": False, "message": validate_errors["message"]}), validate_errors["status"]
 
     db.session.delete(note)
     db.session.commit()
@@ -130,9 +130,9 @@ def share_note(note_id):
     # This is the permission level of the person sharing the file, not the person who it is being shared to
     sharer_permission = Permission.query.filter_by(user_id=user.id, note_id=note.id).first() 
 
-    validate_data = validate(user=user, note=note, target_user=target_user, permission=sharer_permission)
-    if not validate_data:
-        return jsonify({"success": False, "message": validate_data["message"]}), validate_data["status"]
+    validate_errors = validate(user=user, note=note, target_user=target_user, permission=sharer_permission)
+    if validate_errors:
+        return jsonify({"success": False, "message": validate_errors["message"]}), validate_errors["status"]
     
     if not check_edit_permission(note, user):
         return jsonify({"success": False, "message": "Access denied"}), 403
