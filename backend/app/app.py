@@ -4,7 +4,6 @@ from flask_jwt_extended import JWTManager
 from flask_socketio import SocketIO
 from datetime import timedelta
 from models import db
-from routes import register_bp
 
 app = Flask(__name__)
 CORS(app)
@@ -18,10 +17,9 @@ socketio = SocketIO(app)
 db.init_app(app)
 jwt = JWTManager(app)
 
-# Register blueprints
-register_bp(app)
-
 if __name__ == "__main__":
+    from routes import register_bp
+    register_bp(app)
     with app.app_context():
         db.create_all()
     socketio.run(app, port=8000)

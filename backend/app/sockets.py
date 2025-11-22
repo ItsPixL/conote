@@ -1,6 +1,6 @@
 from flask_socketio import join_room, emit
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
-from app import socketio  
+from app import socketio
 from models import User, Note, Permission
 
 @socketio.on("join_note")
