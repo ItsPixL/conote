@@ -12,11 +12,11 @@ def join(data):
 
     permission = Permission.query.filter_by(user_id=user.id, note_id=note_id).first()
     if not permission:
-        emit("error", {"msg": "Access denied"})
+        emit("error", {"message": "Access denied"})
         return
     
     join_room(note_id)
-    emit("status", {"msg": f"{user_email} joined note {note_id} with {permission.permission} status"}, room=note_id)
+    emit("join_note", {"message": f"{user_email} joined note {note_id} with {permission.permission} status"}, room=note_id)
 
 @socketio.on("update_note")
 def handle_update(data):
@@ -33,3 +33,11 @@ def share_note(data):
     emit("share_note", {"user": user_email, "noteId": data["noteId"], 
                         "sharedBy": data["sharedBy"], "sharedWith": data["sharedWith"],
                         "permission": data["permission"]}, room=data["noteId"])
+
+@socketio.on("unshare_note")
+def unshare_note(data):
+    verify_jwt_in_request()
+    user_email = get_jwt_identity()
+    emit("unshare_note", {"user": user_email, "noteId": data["noteId"], 
+                          "unsharedBy": data["unsharedBy"], "targetUser": data["targetUser"]},
+                          room=data["noteId"])
