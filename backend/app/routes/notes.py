@@ -5,14 +5,14 @@ from datetime import datetime, timezone
 from models import db
 from app import socketio
 
-notes_bp = Blueprint("main", __name__)
+notes_bp = Blueprint("notes", __name__)
 
-
+# Function to check if different entities exist
 def validate(user="*", note="*", target_user="*", sharer_permission="*", sharing_permission="*"):
     if user != "*" and not user:
         return {"message": "User not found", "status": 404}
     if note != "*" and not note:
-        return {"message": "User not found", "status": 404}
+        return {"message": "Note not found", "status": 404}
     if target_user != "*" and not target_user:
         return {"message": "Target user not found", "status": 404}
     if sharer_permission != "*" and (not sharer_permission or not sharer_permission.permission):
@@ -25,7 +25,7 @@ def validate(user="*", note="*", target_user="*", sharer_permission="*", sharing
 def check_edit_permission(note, user):
     if note.user_id != user.id:
         permission = Permission.query.filter_by(user_id=user.id, note_id=note.id).first()
-        if not permission or permission.level() >= 2:
+        if not permission or permission.level() < 2:
             return False
     return True
 
@@ -44,10 +44,9 @@ def get_user_notes():
 
     return jsonify({
         "success": True,
-        "message": f"Welcome back, {user.username}!",
-        "notes": user_notes,
-        "user": user.to_dict()
-    }), 200
+        "data": {"notes": user_notes, "user": user.to_dict()},
+        "message": f"Welcome back, {user.username}!"
+        }), 200
 
 
 @notes_bp.route("/<int:note_id>", methods=["GET"])
@@ -63,8 +62,9 @@ def get_single_note(note_id):
 
     return jsonify({
         "success": True,
-        "note": note.to_dict()
-    }), 200
+        "data": {"note": note.to_dict()},
+        "message": "Note retrieved."
+        }), 200
 
 
 @notes_bp.route("/<int:note_id>", methods=["PATCH"])
@@ -95,9 +95,9 @@ def update_note(note_id):
 
     return jsonify({
         "success": True,
-        "message": "Note updated successfully",
-        "note": note.to_dict()
-    }), 200
+        "data": {"note": note.to_dict()},
+        "message": "Note updated successfully"
+        }), 200
 
 
 @notes_bp.route("/<int:note_id>", methods=["DELETE"])
@@ -140,6 +140,8 @@ def share_note(note_id):
         return jsonify({"success": False, "message": "Access denied due to insufficient permissions"}), 403
     
     permission_status = data.get("permission")
+    if not permission_status or permission_status.strip().lower() not in ["read", "edit", "owner"]:
+        return jsonify({"success": False, "message": "No permission status given."}), 400
     # Check if permission already exists (this is for the person whom the file is being shared to)
     existing = Permission.query.filter_by(user_id=target_user.id, note_id=note.id).first()
     if existing:
@@ -162,6 +164,7 @@ def share_note(note_id):
 
     return jsonify({
         "success": True,
+        "data": {"permission": permission_status},
         "message": f"Note shared with {target_username} as '{permission_status}'"
     }), 200
 
@@ -182,3 +185,25 @@ def unshare_note(note_id):
                                sharing_permission=sharing_permission)
     if validate_errors:
         return jsonify({"success": False, "message": validate_errors["message"]}), validate_errors["status"]
+    
+    if sharer_permission.level() < 2:
+        return jsonify({"success": False, "message": "Access denied due to insufficient permissions"}), 403
+    if sharing_permission.level() == 3:
+        return jsonify({"success": False, "message": "Can't remove the owner of the note!"}), 403
+    
+    db.session.delete(sharing_permission)
+    db.session.commit()
+
+    socketio.emit(
+    "unshare_note",
+    {
+        "noteId": note.id,
+        "unsharedBy": user.username,
+        "targetUser": target_user.username,
+    },
+    room=str(note.id))   
+
+    return jsonify({
+        "success": True,
+        "message": f"{target_username}'s permission has been removed."
+    }), 200
