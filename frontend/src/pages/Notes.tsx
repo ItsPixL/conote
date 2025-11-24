@@ -1,9 +1,12 @@
 import { useAuth } from "../hooks/useAuth";
 import { useState, useEffect } from "react";
 import { getUserNotes } from "../utils/notesApi";
+import { useNavigate } from "react-router-dom";
+import "./Notes.css";
 
 const Notes = () => {
   const auth = useAuth();
+  const navigate = useNavigate();
   const [notes, setNotes] = useState([]);
   const [message, setMessage] = useState<string>("");
 
@@ -21,11 +24,16 @@ const Notes = () => {
     fetchNotes();
   }, []);
 
+  const logout = () => {
+    auth.logout();
+    navigate("/home");
+  };
+
   return (
-    <div>
+    <div className="notes-page">
       <span>Welcome, {auth.user.username}</span>
       <h2>{message}</h2>
-      <button onClick={auth.logout}>Logout</button>
+      <button onClick={logout}>Logout</button>
       <ul>
         {notes.map((note: any) => (
           <li key={note.id}>{note.title}</li>
