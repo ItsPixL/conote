@@ -1,6 +1,5 @@
 import { AxiosError } from "axios";
 import React, { useState } from "react";
-import { authApi } from "../utils/api";
 import { type SignUpData, type ErrorResponse } from "../utils/types";
 import { signUp } from "../utils/authApi";
 
