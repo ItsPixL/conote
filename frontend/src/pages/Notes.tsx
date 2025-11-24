@@ -26,6 +26,7 @@ const Notes = () => {
 
   const logout = () => {
     auth.logout();
+    localStorage.removeItem("");
     navigate("/home");
   };
 
@@ -35,9 +36,11 @@ const Notes = () => {
       <h2>{message}</h2>
       <button onClick={logout}>Logout</button>
       <ul>
-        {notes.map((note: any) => (
-          <li key={note.id}>{note.title}</li>
-        ))}
+        {notes && notes.length > 0 ? (
+          notes.map((note: any) => <li key={note.id}>{note.title}</li>)
+        ) : (
+          <div>User has no notes</div>
+        )}
       </ul>
     </div>
   );

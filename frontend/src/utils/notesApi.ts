@@ -1,6 +1,6 @@
-import { api } from "./api";
+import { jwtApi } from "./api";
 
 export const getUserNotes = async () => {
-  const response = await api.get("/notes/");
+  const response = await jwtApi.get("/note/");
   return response.data;
 };
