@@ -33,7 +33,6 @@ const LoginForm = () => {
         token: string;
         user: User;
       };
-      console.log(token, user);
 
       auth?.login(token, user);
       navigate("/notes");

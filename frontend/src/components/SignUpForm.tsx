@@ -25,8 +25,10 @@ const SignupForm = () => {
 
     try {
       const res = await authApi.post("/auth/signup", formData);
-      console.log("Signup success:", res.data);
+      console.log("Signup success:", res.data.data);
       alert("Sign up successful!"); // CHANGE THIS LATER
+
+      // Catch block
     } catch (err: unknown) {
       console.error("Signup error:", err);
 
