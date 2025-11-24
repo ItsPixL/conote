@@ -18,7 +18,7 @@ const Notes = () => {
       }
     };
 
-    fetchNotes()
+    fetchNotes();
   }, []);
 
   return (

@@ -29,13 +29,16 @@ const LoginForm = () => {
 
     try {
       const res = await authApi.post("/auth/login", formData);
-      const { token, user } = res.data as {
+      const { token, user } = res.data.data as {
         token: string;
         user: User;
       };
+      console.log(token, user);
 
       auth?.login(token, user);
       navigate("/notes");
+
+      // Catch block
     } catch (err: unknown) {
       console.error("Login error:", err);
 
