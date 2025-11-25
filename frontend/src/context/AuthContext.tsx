@@ -3,7 +3,7 @@
 import { createContext, useState, useEffect, useContext, useMemo } from "react";
 import { type User, type AuthContextType } from "../utils/types";
 import { Navigate } from "react-router-dom";
-import { jwtApi } from "../utils/api";
+import { refreshUser } from "../utils/authApi";
 
 // Create AuthContext
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -24,7 +24,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (!token) return null;
     try {
       setLoading(true);
-      const res = await jwtApi.get("/api/user");
+      const res = await refreshUser();
       const data: User = res.data.data.user;
       setUser(data);
       return data;
