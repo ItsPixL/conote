@@ -1,4 +1,4 @@
-import { AxiosError } from "axios";
+import axios from "axios";
 import React, { useState } from "react";
 import { type SignUpData, type ErrorResponse } from "../../utils/types";
 import { signUp } from "../../utils/authApi";
@@ -15,10 +15,6 @@ const SignupForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const isAxiosError = (err: unknown): err is AxiosError => {
-    return (err as AxiosError).isAxiosError !== undefined;
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
@@ -26,14 +22,12 @@ const SignupForm = () => {
     try {
       const res = await signUp(formData);
       console.log("Signup success:", res.data.data);
-      alert("Sign up successful!"); // CHANGE THIS LATER
-
-      // Catch block
+      alert("Sign up successful!"); // Replace later
     } catch (err: unknown) {
       console.error("Signup error:", err);
 
-      // Check if the error is an AxiosError
-      if (isAxiosError(err) && err.response?.data) {
+      // Use Axios built-in type guard
+      if (axios.isAxiosError(err) && err.response?.data) {
         const errorData = err.response.data as ErrorResponse;
         const errorMessage = errorData.message;
 
@@ -65,6 +59,7 @@ const SignupForm = () => {
         onChange={handleChange}
         required
       />
+
       <input
         name="email"
         type="email"
@@ -73,6 +68,7 @@ const SignupForm = () => {
         onChange={handleChange}
         required
       />
+
       <input
         name="password"
         type="password"
@@ -81,11 +77,14 @@ const SignupForm = () => {
         onChange={handleChange}
         required
       />
+
       <button type="submit">Sign Up</button>
+
       <p className="declaration">
         By clicking "Sign Up", you agree to CoNote's Privacy Policy and Terms
         and Conditions.
       </p>
+
       {error && (
         <p style={{ color: "red" }} className="error">
           {error}

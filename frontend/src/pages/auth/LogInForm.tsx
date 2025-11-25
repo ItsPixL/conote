@@ -1,4 +1,4 @@
-import { AxiosError } from "axios";
+import axios from "axios";
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { logIn } from "../../utils/authApi";
@@ -23,10 +23,6 @@ const LoginForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const isAxiosError = (err: unknown): err is AxiosError => {
-    return (err as AxiosError).isAxiosError !== undefined;
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
@@ -40,12 +36,10 @@ const LoginForm = () => {
 
       auth?.login(token, user);
       navigate("/notes");
-
-      // Catch block
     } catch (err: unknown) {
       console.error("Login error:", err);
 
-      if (isAxiosError(err) && err.response?.data) {
+      if (axios.isAxiosError(err) && err.response?.data) {
         const errorData = err.response.data as ErrorResponse;
         const errorMessage = errorData.message;
 
@@ -83,10 +77,12 @@ const LoginForm = () => {
         required
       />
       <button type="submit">Log In</button>
+
       <p className="declaration">
         By clicking "Log In", you agree to CoNote's Privacy Policy and Terms and
         Conditions.
       </p>
+
       {error && (
         <p style={{ color: "red" }} className="error">
           {error}
