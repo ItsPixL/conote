@@ -26,7 +26,6 @@ const SignupForm = () => {
     } catch (err: unknown) {
       console.error("Signup error:", err);
 
-      // Use Axios built-in type guard
       if (axios.isAxiosError(err) && err.response?.data) {
         const errorData = err.response.data as ErrorResponse;
         const errorMessage = errorData.message;
