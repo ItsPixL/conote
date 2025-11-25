@@ -1,6 +1,6 @@
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { useState, useEffect } from "react";
-import { getUserNotes } from "../utils/notesApi";
+import { getUserNotes } from "../../utils/notesApi";
 import { useNavigate } from "react-router-dom";
 import "./Notes.css";
 
@@ -29,6 +29,8 @@ const Notes = () => {
     localStorage.removeItem("");
     navigate("/home");
   };
+
+  if (!auth.user) return <div>Loading...</div>;
 
   return (
     <div className="notes-page">

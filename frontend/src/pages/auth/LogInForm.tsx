@@ -1,9 +1,13 @@
 import { AxiosError } from "axios";
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { logIn } from "../utils/authApi";
-import { type LoginData, type ErrorResponse, type User } from "../utils/types";
-import { AuthContext } from "../context/AuthContext";
+import { logIn } from "../../utils/authApi";
+import {
+  type LoginData,
+  type ErrorResponse,
+  type User,
+} from "../../utils/types";
+import { AuthContext } from "../../context/AuthContext";
 
 const LoginForm = () => {
   const [error, setError] = useState<string>("");

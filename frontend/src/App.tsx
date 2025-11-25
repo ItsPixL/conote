@@ -5,11 +5,11 @@ import {
   Navigate,
 } from "react-router-dom";
 import { AuthProvider, RequireAuth } from "./context/AuthContext";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
+import Login from "./pages/auth/Login";
+import SignUp from "./pages/auth/SignUp";
 import NavBar from "./components/Navbar";
-import Home from "./pages/Home";
-import Notes from "./pages/Notes";
+import Home from "./pages/home/Home";
+import Notes from "./pages/notes/Notes";
 
 export const App = () => {
   return (
