@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { type SignUpData, type ErrorResponse } from "../../utils/types";
+import { type SignUpData } from "../../utils/types";
 import { signUp } from "../../utils/authApi";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +23,7 @@ const SignupForm = () => {
     setError("");
 
     try {
-      const res = await signUp(formData);
+      await signUp(formData);
       toast.success("Account created! Please log in.");
       navigate("/login");
     } catch (err: unknown) {

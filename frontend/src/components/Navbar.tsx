@@ -1,7 +1,11 @@
+// ./components/Navbar.tsx
+
+// Imports
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 
-const NavBar = () => {
+// Navbar
+const Navbar = () => {
   return (
     <nav>
       <Link to="/home" className="logo">
@@ -19,4 +23,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default Navbar;

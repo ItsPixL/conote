@@ -1,7 +1,11 @@
+// ./pages/auth/Login.tsx
+
+// Imports
 import { useNavigate } from "react-router-dom";
 import LoginForm from "./LogInForm";
 import "./SignUp.css";
 
+// Login
 const Login = () => {
   const navigate = useNavigate();
   const redirect = (e: React.MouseEvent<HTMLAnchorElement>) => {

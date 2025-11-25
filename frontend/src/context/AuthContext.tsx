@@ -1,15 +1,19 @@
 // ./context/AuthContext.tsx
 
+// Imports
 import { createContext, useState, useEffect, useContext, useMemo } from "react";
-import { type User, type AuthContextType } from "../utils/types";
 import { Navigate } from "react-router-dom";
 import { refreshUser } from "../utils/authApi";
+
+// Types
+import { type User, type AuthContextType } from "../utils/types";
 
 // Create AuthContext
 export const AuthContext = createContext<AuthContextType | undefined>(
   undefined
 );
 
+// Auth Provider
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -76,7 +80,7 @@ export const RequireAuth: React.FC<{ children: React.ReactElement }> = ({
   const auth = useContext(AuthContext);
 
   if (auth?.loading) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>; // CHANGE THIS WHEN YOU BUILD THE LOADER -------------------------------------------------------------------
   }
 
   if (!auth?.user) {
