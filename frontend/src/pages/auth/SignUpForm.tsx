@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import React, { useState } from "react";
-import { type SignUpData, type ErrorResponse } from "../utils/types";
-import { signUp } from "../utils/authApi";
+import { type SignUpData, type ErrorResponse } from "../../utils/types";
+import { signUp } from "../../utils/authApi";
 
 const SignupForm = () => {
   const [error, setError] = useState<string>("");

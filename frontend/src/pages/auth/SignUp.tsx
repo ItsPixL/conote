@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import SignUpForm from "../components/SignUpForm";
+import SignUpForm from "./SignUpForm";
 import "./SignUp.css";
 
 const SignUp = () => {
