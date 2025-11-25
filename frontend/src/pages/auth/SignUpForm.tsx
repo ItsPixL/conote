@@ -24,31 +24,29 @@ const SignupForm = () => {
 
     try {
       const res = await signUp(formData);
-      console.log("Signup success:", res.data.data);
-      toast.success("Sign up successful!");
+      toast.success("Account created! Please log in.");
       navigate("/login");
     } catch (err: unknown) {
       console.error("Signup error:", err);
 
       if (axios.isAxiosError(err) && err.response?.data) {
-        const errorData = err.response.data as ErrorResponse;
-        const errorMessage = errorData.message;
+        const data = err.response.data as {
+          message?: string;
+          success?: boolean;
+        };
 
-        if (errorMessage === "Email already exists") {
-          setError(
-            "This email is already registered. Please use a different one."
-          );
-        } else if (errorMessage === "Username already exists") {
-          setError(
-            "This username is already taken. Please choose another one."
-          );
+        const msg = data.message || "An error occurred while signing up";
+
+        if (
+          msg === "Email already exists" ||
+          msg === "Username already exists"
+        ) {
+          setError(msg);
         } else {
-          setError(
-            "An error occurred while signing up. Please try again later."
-          );
+          toast.error(msg);
         }
       } else {
-        setError("An unknown error occurred.");
+        toast.error("Network error. Please try again.");
       }
     }
   };
@@ -88,11 +86,7 @@ const SignupForm = () => {
         and Conditions.
       </p>
 
-      {error && (
-        <p style={{ color: "red" }} className="error">
-          {error}
-        </p>
-      )}
+      <p className="error">{error || "\u00A0"}</p>
     </form>
   );
 };

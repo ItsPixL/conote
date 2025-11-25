@@ -2,12 +2,9 @@ import axios from "axios";
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { logIn } from "../../utils/authApi";
-import {
-  type LoginData,
-  type ErrorResponse,
-  type User,
-} from "../../utils/types";
+import { type LoginData, type User } from "../../utils/types";
 import { AuthContext } from "../../context/AuthContext";
+import { toast } from "react-hot-toast";
 
 const LoginForm = () => {
   const [error, setError] = useState<string>("");
@@ -29,31 +26,31 @@ const LoginForm = () => {
 
     try {
       const res = await logIn(formData);
-      const { token, user } = res.data.data as {
-        token: string;
-        user: User;
-      };
+      const { token, user } = res.data.data as { token: string; user: User };
 
       auth?.login(token, user);
+      toast.success("Logged in successfully!");
       navigate("/notes");
     } catch (err: unknown) {
       console.error("Login error:", err);
 
       if (axios.isAxiosError(err) && err.response?.data) {
-        const errorData = err.response.data as ErrorResponse;
-        const errorMessage = errorData.message;
+        const data = err.response.data as {
+          message?: string;
+          success?: boolean;
+        };
+        const msg = data.message || "An error occurred while logging in";
+        console.log("Login error message from backend:", msg);
 
-        if (errorMessage === "Invalid credentials") {
-          setError("Incorrect email or password. Please try again.");
-        } else if (errorMessage === "User not found") {
-          setError("No account found with this email.");
-        } else {
+        if (msg === "Invalid credentials" || msg === "User not found") {
           setError(
-            "An error occurred while logging in. Please try again later."
+            msg === "Invalid credentials" ? "Incorrect email or password." : msg
           );
+        } else {
+          toast.error(msg);
         }
       } else {
-        setError("An unknown error occurred.");
+        toast.error("Network error. Please check your connection.");
       }
     }
   };
@@ -68,6 +65,7 @@ const LoginForm = () => {
         onChange={handleChange}
         required
       />
+
       <input
         name="password"
         type="password"
@@ -76,6 +74,7 @@ const LoginForm = () => {
         onChange={handleChange}
         required
       />
+
       <button type="submit">Log In</button>
 
       <p className="declaration">
@@ -83,11 +82,7 @@ const LoginForm = () => {
         Conditions.
       </p>
 
-      {error && (
-        <p style={{ color: "red" }} className="error">
-          {error}
-        </p>
-      )}
+      <p className="error">{error || "\u00A0"}</p>
     </form>
   );
 };

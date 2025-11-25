@@ -82,4 +82,6 @@ button:hover {
 
 .error {
   text-align: center;
+  color: red;
+  min-height: "1.5em";
 }
