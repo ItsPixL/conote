@@ -2,8 +2,11 @@ import axios from "axios";
 import React, { useState } from "react";
 import { type SignUpData, type ErrorResponse } from "../../utils/types";
 import { signUp } from "../../utils/authApi";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const SignupForm = () => {
+  const navigate = useNavigate();
   const [error, setError] = useState<string>("");
   const [formData, setFormData] = useState<SignUpData>({
     username: "",
@@ -22,7 +25,8 @@ const SignupForm = () => {
     try {
       const res = await signUp(formData);
       console.log("Signup success:", res.data.data);
-      alert("Sign up successful!"); // Replace later
+      toast.success("Sign up successful!");
+      navigate("/login");
     } catch (err: unknown) {
       console.error("Signup error:", err);
 

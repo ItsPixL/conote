@@ -10,11 +10,13 @@ import SignUp from "./pages/auth/SignUp";
 import NavBar from "./components/Navbar";
 import Home from "./pages/home/Home";
 import Notes from "./pages/notes/Notes";
+import { Toaster } from "react-hot-toast";
 
 export const App = () => {
   return (
     <AuthProvider>
       <Router>
+        <Toaster position="top-right" />
         <NavBar />
         <Routes>
           <Route path="/home" element={<Home />} />
