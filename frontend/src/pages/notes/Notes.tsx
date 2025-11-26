@@ -1,9 +1,13 @@
+// ./pages/notes/Notes.tsx
+
+// Imports
 import { useAuth } from "../../hooks/useAuth";
 import { useState, useEffect } from "react";
 import { getUserNotes } from "../../utils/notesApi";
 import { useNavigate } from "react-router-dom";
 import "./Notes.css";
 
+// Notes
 const Notes = () => {
   const auth = useAuth();
   const navigate = useNavigate();

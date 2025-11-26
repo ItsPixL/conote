@@ -1,10 +1,16 @@
+// ./pages/auth/SignUpForm.tsx
+
+// Imports
 import axios from "axios";
 import React, { useState } from "react";
-import { type SignUpData } from "../../utils/types";
 import { signUp } from "../../utils/authApi";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
+// Types
+import { type SignUpData } from "../../utils/types";
+
+// Sign Up Form
 const SignupForm = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<string>("");
