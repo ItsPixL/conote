@@ -1,7 +1,6 @@
 // ./pages/notes/Notes.tsx
 
 // Imports
-import { useAuth } from "../../hooks/useAuth";
 import { useState, useEffect } from "react";
 import { getUserNotes } from "../../utils/notesApi";
 import { toast } from "react-hot-toast";
@@ -9,9 +8,17 @@ import "./Notes.css";
 
 // Notes
 const Notes = () => {
-  const auth = useAuth();
   const [notes, setNotes] = useState([]);
   const [message, setMessage] = useState<string>("");
+
+  const testNote = {
+    id: 1,
+    userId: 1,
+    title: "A New Note",
+    content: "This is the content of the note",
+    createdTime: "2025-11-26T23:00:00+00:00",
+    updatedTime: "2025-11-27T02:00:00+00:00",
+  };
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -28,11 +35,8 @@ const Notes = () => {
     fetchNotes();
   }, []);
 
-  if (!auth.user) return <div>Loading...</div>;
-
   return (
     <div className="notes-page">
-      <span>Welcome, {auth.user.username}</span>
       <h2>{message}</h2>
       <ul>
         {notes && notes.length > 0 ? (
