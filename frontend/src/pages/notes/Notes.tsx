@@ -5,6 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useState, useEffect } from "react";
 import { getUserNotes } from "../../utils/notesApi";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import "./Notes.css";
 
 // Notes
@@ -22,6 +23,7 @@ const Notes = () => {
         setMessage(data.message);
       } catch (err) {
         console.error("Error fetching notes:", err);
+        toast.error("Error fetching notes. Try again later.");
       }
     };
 
@@ -31,6 +33,7 @@ const Notes = () => {
   const logout = () => {
     auth.logout();
     localStorage.removeItem("");
+    toast.success("Logged out successfully!");
     navigate("/home");
   };
 
