@@ -1,6 +1,6 @@
 /* ./components/Navbar.css */
 
-nav {
+.navbar {
   width: 80vw;
   background-color: var(--bg-accent);
   margin: 1.5rem auto;

@@ -4,14 +4,12 @@
 import { useAuth } from "../../hooks/useAuth";
 import { useState, useEffect } from "react";
 import { getUserNotes } from "../../utils/notesApi";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import "./Notes.css";
 
 // Notes
 const Notes = () => {
   const auth = useAuth();
-  const navigate = useNavigate();
   const [notes, setNotes] = useState([]);
   const [message, setMessage] = useState<string>("");
 
@@ -30,20 +28,12 @@ const Notes = () => {
     fetchNotes();
   }, []);
 
-  const logout = () => {
-    auth.logout();
-    localStorage.removeItem("");
-    toast.success("Logged out successfully!");
-    navigate("/home");
-  };
-
   if (!auth.user) return <div>Loading...</div>;
 
   return (
     <div className="notes-page">
       <span>Welcome, {auth.user.username}</span>
       <h2>{message}</h2>
-      <button onClick={logout}>Logout</button>
       <ul>
         {notes && notes.length > 0 ? (
           notes.map((note: any) => <li key={note.id}>{note.title}</li>)

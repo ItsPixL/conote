@@ -20,22 +20,19 @@
   box-shadow: 10px 10px 50px white;
 }
 
-h1,
-p {
+.text h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
   text-align: center;
 }
 
-h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-p {
+.text p {
   font-size: 1rem;
   line-height: 1.5rem;
+  text-align: center;
 }
 
-a {
+.text a {
   text-decoration: underline;
   cursor: pointer;
 }
@@ -44,7 +41,7 @@ a {
   margin: 2rem auto 1rem auto;
 }
 
-form {
+.sign-up-form {
   display: flex;
   flex-direction: column;
   max-width: 80vw;
@@ -52,13 +49,13 @@ form {
   gap: 1rem;
 }
 
-input {
+.sign-up-form input {
   padding: 1rem 0.5rem;
   width: 80%;
   margin: 0 auto;
 }
 
-button {
+.sign-up-form button {
   width: 30%;
   font-size: 1.1rem;
   padding: 0.8rem 0.5rem;
@@ -69,7 +66,7 @@ button {
     color 0.1s linear;
 }
 
-button:hover {
+.sign-up-form button:hover {
   transform: scale(1.05);
   background-color: var(--accent-2);
   color: var(--text-light);
