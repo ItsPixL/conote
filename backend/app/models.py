@@ -31,6 +31,7 @@ class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     title = db.Column(db.String(50))
+    description = db.Column(db.String(250))
     content = db.Column(db.Text)
     createdTime = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     updatedTime = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
@@ -42,6 +43,7 @@ class Note(db.Model):
             "id": self.id,
             "userId": self.user_id,
             "title": self.title,
+            "description": self.description,
             "content": self.content,
             "createdTime": self.createdTime,
             "updatedTime": self.updatedTime
@@ -52,7 +54,7 @@ class Permission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     note_id = db.Column(db.Integer, db.ForeignKey('notes.id'), nullable=False)
-    permission = db.Column(db.String(15))
+    permission = db.Column(db.Integer)
 
     def to_dict(self):
         return {
@@ -62,17 +64,6 @@ class Permission(db.Model):
             "permission": self.permission
         }
     
-    def level(self):
-        match self.permission:
-            case "read":
-                return 1
-            case "edit":
-                return 2
-            case "owner":
-                return 3
-            case _:
-                return 0
-
 
 class Version(db.Model):
     __tablename__ = "versions"

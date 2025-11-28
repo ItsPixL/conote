@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from models import User, Note, Permission
 from datetime import datetime, timezone
 from models import db
-from app import socketio
+from backend.app.app import socketio
 
 notes_bp = Blueprint("notes", __name__)
 
@@ -22,14 +22,13 @@ def validate(user="*", note="*", target_user="*", sharer_permission="*", sharing
     return None
 
 
-def check_edit_permission(note, user):
-    if note.user_id != user.id:
-        permission = Permission.query.filter_by(user_id=user.id, note_id=note.id).first()
-        if not permission or permission.level() < 2:
-            return False
+def check_permission(note, user, level):
+    permission = Permission.query.filter_by(user_id=user.id, note_id=note.id).first()
+    if not permission or permission.permission < level: # Doesn't have at least edit access
+        return False
     return True
 
-    
+
 @notes_bp.route("/", methods=["GET"])
 @jwt_required()
 def get_user_notes():
@@ -67,6 +66,34 @@ def get_single_note(note_id):
         }), 200
 
 
+@notes_bp.route("/create", methods=["POST"])
+@jwt_required()
+def create_note():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).first()
+    
+    validate_errors = validate(user=user)
+    if validate_errors:
+        return jsonify({"success": False, "message": validate_errors["message"]}), validate_errors["status"]
+   
+    data = request.get_json()
+    title, description = data.get("title"), data.get("description")
+    if not title:
+        return jsonify({"success": False, "message": "Title must be provided."}), 401
+    
+    note = Note(user_id=user.id, title=title, description=description, content=None)
+    permission = Permission(user_id=user.id, note_id=note.id, permission=3)
+    db.session.add(note)
+    db.session.add(permission)
+    db.session.commit()
+
+    return jsonify({
+        "success": True,
+        "data": {"note": note.to_dict(), "permission": permission.to_dict()},
+        "message": "Note created successfully"
+        }), 200
+
+
 @notes_bp.route("/<int:note_id>", methods=["PATCH"])
 @jwt_required()
 def update_note(note_id):
@@ -78,7 +105,7 @@ def update_note(note_id):
     if validate_errors:
         return jsonify({"success": False, "message": validate_errors["message"]}), validate_errors["status"]
     
-    if not check_edit_permission(note, user):
+    if not check_permission(note, user, 2):
         return jsonify({"success": False, "message": "Access denied due to insufficient permissions"}), 403
 
     data = request.get_json()
@@ -110,6 +137,9 @@ def delete_note(note_id):
     validate_errors = validate(user=user, note=note)
     if validate_errors:
         return jsonify({"success": False, "message": validate_errors["message"]}), validate_errors["status"]
+    
+    if not check_permission(user, note, 3):
+        return jsonify({"success": False, "message": "Only the note owner can delete the note!"}), 403
 
     db.session.delete(note)
     db.session.commit()
@@ -136,18 +166,18 @@ def share_note(note_id):
     if validate_errors:
         return jsonify({"success": False, "message": validate_errors["message"]}), validate_errors["status"]
     
-    if not check_edit_permission(note, user):
+    if not check_permission(note, user, 2):
         return jsonify({"success": False, "message": "Access denied due to insufficient permissions"}), 403
     
-    permission_status = data.get("permission")
-    if not permission_status or permission_status.strip().lower() not in ["read", "edit", "owner"]:
+    permission_level = data.get("permission")
+    if not permission_level or permission_level not in [1, 2, 3]:
         return jsonify({"success": False, "message": "No permission status given."}), 400
     # Check if permission already exists (this is for the person whom the file is being shared to)
     existing = Permission.query.filter_by(user_id=target_user.id, note_id=note.id).first()
     if existing:
-        existing.permission = permission_status  # Update permission if already shared
+        existing.permission = permission_level  # Update permission if already shared
     else:
-        new_permission = Permission(user_id=target_user.id, note_id=note.id, permission=permission_status)
+        new_permission = Permission(user_id=target_user.id, note_id=note.id, permission=permission_level)
         db.session.add(new_permission)
 
     db.session.commit()
@@ -158,18 +188,18 @@ def share_note(note_id):
         "noteId": note.id,
         "sharedBy": user.username,
         "sharedWith": target_user.username,
-        "permission": permission_status
+        "permission": permission_level
     },
     room=str(note.id))   
 
     return jsonify({
         "success": True,
-        "data": {"permission": permission_status},
-        "message": f"Note shared with {target_username} as '{permission_status}'"
+        "data": {"permission": permission_level},
+        "message": f"Note shared with {target_username} with permission level {permission_level}"
     }), 200
 
 
-@notes_bp.route("/<int:note_id>/unshare", methods=["POST"])
+@notes_bp.route("/<int:note_id>/unshare", methods=["DELETE"])
 @jwt_required()
 def unshare_note(note_id):
     current_user_email = get_jwt_identity()
@@ -186,9 +216,9 @@ def unshare_note(note_id):
     if validate_errors:
         return jsonify({"success": False, "message": validate_errors["message"]}), validate_errors["status"]
     
-    if sharer_permission.level() < 2:
+    if sharer_permission.permission < 2: # The person who is unsharing must have at least edit access
         return jsonify({"success": False, "message": "Access denied due to insufficient permissions"}), 403
-    if sharing_permission.level() == 3:
+    if sharing_permission.permission == 3: # The person who is being unshared can't be the owner
         return jsonify({"success": False, "message": "Can't remove the owner of the note!"}), 403
     
     db.session.delete(sharing_permission)
