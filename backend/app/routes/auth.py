@@ -16,10 +16,8 @@ def register():
     if User.query.filter_by(email=email).first():
         return jsonify({"success": False, "message": "Email already exists."}), 409
 
-    user = User(
-        username=username,
-        email=email,
-    )
+    user = User(username=username, email=email)
+    
     user.set_password(data.get("password"))
     db.session.add(user)
     db.session.commit()
