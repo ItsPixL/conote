@@ -44,3 +44,14 @@ export type AuthContextType = {
   fetchUserProfile: () => Promise<User | null>;
   loading: boolean;
 };
+
+// Notes
+export type NoteType = {
+  id: number;
+  userId: number;
+  title: string;
+  content: string;
+  description: string;
+  createdTime: string;
+  updatedTime: string;
+};
