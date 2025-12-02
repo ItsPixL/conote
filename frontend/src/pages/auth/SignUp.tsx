@@ -1,7 +1,11 @@
+// ./pages/auth/SignUp.tsx
+
+// Imports
 import { useNavigate } from "react-router-dom";
 import SignUpForm from "./SignUpForm";
 import "./SignUp.css";
 
+// Sign Up
 const SignUp = () => {
   const navigate = useNavigate();
   const redirect = (e: React.MouseEvent<HTMLAnchorElement>) => {

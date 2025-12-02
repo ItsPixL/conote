@@ -1,11 +1,15 @@
-// api.ts
+// ./utils/api.ts
+
+// Imports
 import axios from "axios";
 
+// Normal API (without authentication)
 export const api = axios.create({
   baseURL: "http://127.0.0.1:8000",
   timeout: 10000,
 });
 
+// JWT API (with authentication)
 export const jwtApi = axios.create({
   baseURL: "http://127.0.0.1:8000",
   timeout: 10000,

@@ -1,4 +1,6 @@
-nav {
+/* ./components/Navbar.css */
+
+.navbar {
   width: 80vw;
   background-color: var(--bg-accent);
   margin: 1.5rem auto;
@@ -16,7 +18,7 @@ nav {
 
 .logo {
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 500;
   margin-left: 2rem;
 }
 
@@ -30,4 +32,19 @@ nav {
 .logo {
   text-decoration: none;
   color: var(--text-dark);
+}
+
+.logout-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  font-size: 1rem;
+  color: var(--text-dark);
+  transition: transform 0.1s ease-in-out, background-color 0.1s linear,
+    color 0.1s linear;
+}
+
+.logout-btn:hover {
+  background-color: var(--accent-1);
+  cursor: pointer;
 }

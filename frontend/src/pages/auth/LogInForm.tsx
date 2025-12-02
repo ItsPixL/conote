@@ -1,14 +1,21 @@
+// ./pages/auth/LoginForm.tsx
+
+// Imports
 import axios from "axios";
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { logIn } from "../../utils/authApi";
+import { AuthContext } from "../../context/AuthContext";
+import { toast } from "react-hot-toast";
+
+// Types
 import {
   type LoginData,
-  type ErrorResponse,
-  type User,
+  type LoginErrorResponse,
+  type LoginSuccessResponse,
 } from "../../utils/types";
-import { AuthContext } from "../../context/AuthContext";
 
+// Login Form
 const LoginForm = () => {
   const [error, setError] = useState<string>("");
   const [formData, setFormData] = useState<LoginData>({
@@ -27,39 +34,41 @@ const LoginForm = () => {
     e.preventDefault();
     setError("");
 
+    const onSuccess = (res: LoginSuccessResponse) => {
+      const { token, user } = res.data.data;
+      auth?.login(token, user);
+      toast.success("Logged in successfully!");
+      navigate("/notes");
+    };
+
+    const onFail = (err: unknown) => {
+      if (axios.isAxiosError<LoginErrorResponse>(err)) {
+        const msg =
+          err.response?.data?.message || "An error occurred while logging in";
+
+        if (msg === "Invalid credentials" || msg === "User not found") {
+          setError(
+            msg === "Invalid credentials" ? "Incorrect email or password." : msg
+          );
+        } else {
+          toast.error(msg);
+        }
+        return;
+      }
+
+      toast.error("Network error. Please check your connection.");
+    };
+
     try {
       const res = await logIn(formData);
-      const { token, user } = res.data.data as {
-        token: string;
-        user: User;
-      };
-
-      auth?.login(token, user);
-      navigate("/notes");
+      onSuccess(res);
     } catch (err: unknown) {
-      console.error("Login error:", err);
-
-      if (axios.isAxiosError(err) && err.response?.data) {
-        const errorData = err.response.data as ErrorResponse;
-        const errorMessage = errorData.message;
-
-        if (errorMessage === "Invalid credentials") {
-          setError("Incorrect email or password. Please try again.");
-        } else if (errorMessage === "User not found") {
-          setError("No account found with this email.");
-        } else {
-          setError(
-            "An error occurred while logging in. Please try again later."
-          );
-        }
-      } else {
-        setError("An unknown error occurred.");
-      }
+      onFail(err);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="sign-up-form">
       <input
         name="email"
         type="email"
@@ -68,6 +77,7 @@ const LoginForm = () => {
         onChange={handleChange}
         required
       />
+
       <input
         name="password"
         type="password"
@@ -76,6 +86,7 @@ const LoginForm = () => {
         onChange={handleChange}
         required
       />
+
       <button type="submit">Log In</button>
 
       <p className="declaration">
@@ -83,11 +94,7 @@ const LoginForm = () => {
         Conditions.
       </p>
 
-      {error && (
-        <p style={{ color: "red" }} className="error">
-          {error}
-        </p>
-      )}
+      <p className="error">{error || "\u00A0"}</p>
     </form>
   );
 };

@@ -1,23 +1,41 @@
+// ./utils/types.ts
+
+// Imports
+import { type AxiosResponse } from "axios";
+
+// Base
+export interface User {
+  username: string;
+  email?: string;
+}
+
+// Login and Signup
+export interface LoginData {
+  email: string;
+  password: string;
+}
+
+type LoginSuccessPayload = {
+  data: {
+    token: string;
+    user: User;
+  };
+};
+
+export type LoginSuccessResponse = AxiosResponse<LoginSuccessPayload>;
+
+export type LoginErrorResponse = {
+  message?: string;
+  success?: boolean;
+};
+
 export interface SignUpData {
   username: string;
   email: string;
   password: string;
 }
 
-export interface LoginData {
-  email: string;
-  password: string;
-}
-
-export interface ErrorResponse {
-  message: string;
-}
-
-export interface User {
-  username: string;
-  email?: string;
-}
-
+// Auth
 export type AuthContextType = {
   user: User | null;
   token: string;
@@ -25,4 +43,15 @@ export type AuthContextType = {
   logout: () => void;
   fetchUserProfile: () => Promise<User | null>;
   loading: boolean;
+};
+
+// Notes
+export type NoteType = {
+  id: number;
+  userId: number;
+  title: string;
+  content: string;
+  description: string;
+  createdTime: string;
+  updatedTime: string;
 };
