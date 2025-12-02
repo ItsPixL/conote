@@ -2,19 +2,22 @@
 
 .sign-up-page {
   height: 100vh;
+  margin: 0;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0;
 }
 
 .sign-up-box {
-  position: absolute;
-  transform: 50% 50%;
   width: 20%;
   min-width: 500px;
-  align-content: center;
   padding: 5rem 2rem;
+
+  position: absolute;
+  align-content: center;
+  transform: 50% 50%;
+
   border-radius: 2rem;
   background-color: var(--bg-accent);
   box-shadow: 10px 10px 50px white;
@@ -42,10 +45,11 @@
 }
 
 .sign-up-form {
+  margin: 0 auto;
+  max-width: 80vw;
+
   display: flex;
   flex-direction: column;
-  max-width: 80vw;
-  margin: 0 auto;
   gap: 1rem;
 }
 
@@ -57,11 +61,13 @@
 
 .sign-up-form button {
   width: 30%;
-  font-size: 1.1rem;
   padding: 0.8rem 0.5rem;
   margin: 0 auto;
+  font-size: 1.1rem;
+
   background-color: var(--accent-1);
   color: var(--text-dark);
+
   transition: transform 0.1s ease-in-out, background-color 0.1s linear,
     color 0.1s linear;
 }

@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from models import User, Note, Permission
 from datetime import datetime, timezone
 from models import db
-from backend.app.app import socketio
+from app import socketio
 
 notes_bp = Blueprint("notes", __name__)
 

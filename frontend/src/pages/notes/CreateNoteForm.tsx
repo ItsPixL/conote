@@ -5,7 +5,7 @@ import { useState } from "react";
 import "./CreateNoteForm.css";
 
 // Types
-import { type CreateNoteFormProps } from "../../utils/types";
+import type { CreateNoteFormProps } from "../../utils/types";
 
 // Create Note Form
 const CreateNoteForm = ({ closeForm }: CreateNoteFormProps) => {

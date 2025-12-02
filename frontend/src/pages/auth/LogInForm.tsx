@@ -9,10 +9,10 @@ import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-hot-toast";
 
 // Types
-import {
-  type LoginData,
-  type LoginErrorResponse,
-  type LoginSuccessResponse,
+import type {
+  LoginData,
+  LoginErrorResponse,
+  LoginSuccessResponse,
 } from "../../utils/types";
 
 // Login Form
