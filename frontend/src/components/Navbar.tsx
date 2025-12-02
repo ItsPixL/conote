@@ -17,7 +17,9 @@ const Navbar = () => {
         CoNote
       </Link>
       {user ? (
-        <button onClick={logout}>Logout</button>
+        <button onClick={logout} className="logout-btn">
+          Logout
+        </button>
       ) : (
         <div className="links">
           <Link to="/login" className="link">
