@@ -47,12 +47,26 @@ const Notes = () => {
       testNote,
       testNote,
       testNote,
+      testNote,
+      testNote,
+      testNote,
+      testNote,
+      testNote,
+      testNote,
+      testNote,
+      testNote,
+      testNote,
+      testNote,
+      testNote,
     ]);
   }, []);
 
   return (
     <div className="notes-page">
       <h2 className="message">{message}</h2>
+      <button className="create-note-btn">
+        <span className="material-symbols-outlined">add</span>
+      </button>
       <div className="notes">
         {notes && notes.length > 0 ? (
           notes.map((note: NoteType) => (

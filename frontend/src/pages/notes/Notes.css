@@ -13,6 +13,56 @@
   margin-bottom: 2rem;
 }
 
+.create-note-btn {
+  background-color: var(--accent-1);
+  position: fixed;
+  bottom: 5rem;
+  right: 5rem;
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: white;
+  cursor: pointer;
+  overflow: visible;
+  transition: transform 0.1s ease-in-out, background-color 0.1s ease-in-out;
+}
+
+.create-note-btn:hover {
+  transform: scale(1.2);
+  background-color: var(--accent-2);
+}
+
+.create-note-btn span {
+  font-size: 2.9rem;
+}
+
+.create-note-btn::after {
+  content: "New Note";
+  position: absolute;
+  right: calc(100% + 0.8rem);
+  bottom: 50%;
+  transform: translateY(50%) translateX(6px);
+  background-color: var(--accent-2);
+  color: #fff;
+  border-radius: 2rem;
+  padding: 0.6rem 1rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.create-note-btn:hover::after {
+  opacity: 1;
+  transform: translateY(50%) translateX(0);
+}
+
 .notes {
   width: 70vw;
   display: grid;
