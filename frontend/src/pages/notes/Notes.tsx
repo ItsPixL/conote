@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { getUserNotes } from "../../utils/notesApi";
 import { toast } from "react-hot-toast";
 import Note from "./Note";
+import CreateNoteForm from "./CreateNoteForm";
 import "./Notes.css";
 
 // Types
@@ -14,6 +15,7 @@ import type { NoteType } from "../../utils/types";
 const Notes = () => {
   const [notes, setNotes] = useState<NoteType[]>([]);
   const [message, setMessage] = useState<string>("");
+  const [createNotePopup, setCreateNotePopup] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -64,9 +66,18 @@ const Notes = () => {
   return (
     <div className="notes-page">
       <h2 className="message">{message}</h2>
-      <button className="create-note-btn">
-        <span className="material-symbols-outlined">add</span>
-      </button>
+      {createNotePopup ? (
+        <CreateNoteForm
+          closeForm={() => setCreateNotePopup(!createNotePopup)}
+        />
+      ) : (
+        <button
+          className="create-note-btn"
+          onClick={() => setCreateNotePopup(!createNotePopup)}
+        >
+          <span className="material-symbols-outlined">add</span>
+        </button>
+      )}
       <div className="notes">
         {notes && notes.length > 0 ? (
           notes.map((note: NoteType) => (

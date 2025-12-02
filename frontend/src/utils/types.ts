@@ -55,3 +55,7 @@ export type NoteType = {
   createdTime: string;
   updatedTime: string;
 };
+
+export type CreateNoteFormProps = {
+  closeForm: () => void;
+};
