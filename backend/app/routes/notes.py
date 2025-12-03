@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models import User, Note, Permission
+from models import User, Note, Permission, Content
 from datetime import datetime, timezone
 from models import db
 from app import socketio
@@ -250,11 +250,8 @@ def upload_thumbnail(note_id):
     if not file_url:
         return jsonify({"success": False, "message": "Upload failed"}), 500
 
-    note = Note.query.get(note_id)
-    if not note:
-        return jsonify({"success": False, "message": "Note not found"}), 404
-
-    note.thumbnail_url = file_url
+    content = Content(note_id=note_id, text=None, imageUrl=file_url) # Need to implement coordPos
+    db.session.add(content)
     db.session.commit()
 
     return jsonify({"success": True, "data": {"thumbnailUrl": file_url}, "message": "Thumbnail uploaded"}), 200

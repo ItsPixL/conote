@@ -58,7 +58,7 @@ class Content(db.Model):
     text = db.Column(db.Text)
     imageUrl = db.Column(db.String(250))
     contentType = "text" if text is not None else "image"
-    coordPos = db.Column(JSON) # Order is: [x, y, width, height]
+    coordPos = db.Column(JSON) # Order is: [x, y, width, height] (width and height reserved for images)
     # coordPos = db.Column(ARRAY(db.Float)) 
 
     def to_dict(self):

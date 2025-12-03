@@ -1,6 +1,5 @@
 import boto3
 from werkzeug.utils import secure_filename
-from flask import current_app
 
 def get_s3_client(app):
     return boto3.client(
