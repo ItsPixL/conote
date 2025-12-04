@@ -16,7 +16,7 @@ export interface LoginData {
 }
 
 type LoginSuccessPayload = {
-  data: {
+  content: {
     token: string;
     user: User;
   };

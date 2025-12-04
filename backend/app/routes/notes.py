@@ -44,7 +44,7 @@ def get_user_notes():
 
     return jsonify({
         "success": True,
-        "data": {"notes": user_notes, "user": user.to_dict()},
+        "content": {"notes": user_notes, "user": user.to_dict()},
         "message": f"Welcome back, {user.username}!"
         }), 200
 
@@ -62,7 +62,7 @@ def get_single_note(note_id):
 
     return jsonify({
         "success": True,
-        "data": {"note": note.to_dict()},
+        "content": {"note": note.to_dict()},
         "message": "Note retrieved."
         }), 200
 
@@ -87,19 +87,11 @@ def create_note():
     db.session.flush()
     permission = Permission(user_id=user.id, note_id=note.id, permission=3)
     db.session.add(permission)
-
-    try:
-        db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        print("DB Error: ", e)
-
-    print(note.to_dict())
-    print(permission.to_dict())
+    db.session.commit()
 
     return jsonify({
         "success": True,
-        "data": {"note": note.to_dict(), "permission": permission.to_dict()},
+        "content": {"note": note.to_dict(), "permission": permission.to_dict()},
         "message": "Note created successfully"
         }), 200
 
@@ -132,7 +124,7 @@ def update_note(note_id):
 
     return jsonify({
         "success": True,
-        "data": {"note": note.to_dict()},
+        "content": {"note": note.to_dict()},
         "message": "Note updated successfully"
         }), 200
 
@@ -204,7 +196,7 @@ def share_note(note_id):
 
     return jsonify({
         "success": True,
-        "data": {"permission": permission_level},
+        "content": {"permission": permission_level},
         "message": f"Note shared with {target_username} with permission level {permission_level}"
     }), 200
 
@@ -248,19 +240,19 @@ def unshare_note(note_id):
         "message": f"{target_username}'s permission has been removed."
     }), 200
 
-@notes_bp.route("/upload_thumbnail/<int:note_id>", methods=["POST"])
-@jwt_required()
-def upload_thumbnail(note_id):
-    file = request.files.get("thumbnail")
-    if not file:
-        return jsonify({"success": False, "message": "No file uploaded"}), 400
+# @notes_bp.route("/upload_thumbnail/<int:note_id>", methods=["POST"])
+# @jwt_required()
+# def upload_thumbnail(note_id):
+#     file = request.files.get("thumbnail")
+#     if not file:
+#         return jsonify({"success": False, "message": "No file uploaded"}), 400
 
-    file_url = upload_file_to_s3(file, current_app, current_app.config["S3_BUCKET"])
-    if not file_url:
-        return jsonify({"success": False, "message": "Upload failed"}), 500
+#     file_url = upload_file_to_s3(file, current_app, current_app.config["S3_BUCKET"])
+#     if not file_url:
+#         return jsonify({"success": False, "message": "Upload failed"}), 500
 
-    content = Content(note_id=note_id, text=None, imageUrl=file_url) # Need to implement coordPos
-    db.session.add(content)
-    db.session.commit()
+#     content = Content(note_id=note_id, text=None, imageUrl=file_url) # Need to implement coordPos
+#     db.session.add(content)
+#     db.session.commit()
 
-    return jsonify({"success": True, "data": {"thumbnailUrl": file_url}, "message": "Thumbnail uploaded"}), 200
+#     return jsonify({"success": True, "content": {"thumbnailUrl": file_url}, "message": "Thumbnail uploaded"}), 200

@@ -22,7 +22,7 @@ def register():
     db.session.add(user)
     db.session.commit()
 
-    return jsonify({"success": True, "data": {"user": user.to_dict()}, "message": "User registered"}), 201
+    return jsonify({"success": True, "content": {"user": user.to_dict()}, "message": "User registered"}), 201
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
@@ -32,7 +32,7 @@ def login():
         return jsonify({"success": False, "message": "Invalid credentials"}), 401
 
     token = create_access_token(identity=user.email)
-    return jsonify({"success": True, "data": {"token": token, "user": user.to_dict()}, "message": "User logged in"}), 200
+    return jsonify({"success": True, "content": {"token": token, "user": user.to_dict()}, "message": "User logged in"}), 200
 
 @auth_bp.route("/user", methods=["GET"])
 @jwt_required()
@@ -45,6 +45,6 @@ def get_user_data():
   
    return jsonify({
        "success": True,
-       "data": {"user": user.to_dict()},
+       "content": {"user": user.to_dict()},
        "message": f"Welcome back, {user.username}!"
        }), 200

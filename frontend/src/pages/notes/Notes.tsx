@@ -21,7 +21,8 @@ const Notes = () => {
     const fetchNotes = async () => {
       try {
         const data = await getUserNotes();
-        setNotes(data.notes);
+        console.log(data);
+        setNotes(data.content.notes ? data.content.notes : []);
         setMessage(data.message);
       } catch (err) {
         console.error("Error fetching notes:", err);
@@ -30,37 +31,6 @@ const Notes = () => {
     };
 
     fetchNotes();
-
-    const testNote = {
-      id: 1,
-      userId: 1,
-      title: "A New Note",
-      content: "This is the content of the note",
-      description: "This is the description of the note",
-      createdTime: "2025-11-26T23:00:00+00:00",
-      updatedTime: "2025-11-27T02:00:00+00:00",
-    };
-
-    //   setNotes([
-    //     testNote,
-    //     testNote,
-    //     testNote,
-    //     testNote,
-    //     testNote,
-    //     testNote,
-    //     testNote,
-    //     testNote,
-    //     testNote,
-    //     testNote,
-    //     testNote,
-    //     testNote,
-    //     testNote,
-    //     testNote,
-    //     testNote,
-    //     testNote,
-    //     testNote,
-    //     testNote,
-    //   ]);
   }, []);
 
   return (

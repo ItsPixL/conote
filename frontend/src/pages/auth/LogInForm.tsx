@@ -35,7 +35,7 @@ const LoginForm = () => {
     setError("");
 
     const onSuccess = (res: LoginSuccessResponse) => {
-      const { token, user } = res.data.data;
+      const { token, user } = res.data.content;
       auth?.login(token, user);
       toast.success("Logged in successfully!");
       navigate("/notes");
