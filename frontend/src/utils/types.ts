@@ -45,6 +45,28 @@ export type AuthContextType = {
   loading: boolean;
 };
 
+export interface AuthPageProps {
+  title: string;
+  subtitle: string;
+  redirectText: string;
+  redirectPath: string;
+  redirectLinkText: string;
+  FormComponent: React.ComponentType;
+}
+
+export interface Field {
+  name: string;
+  type?: string;
+  placeholder: string;
+}
+
+export interface AuthFormProps {
+  fields: Field[];
+  onSubmit: (formData: LoginData | SignUpData) => Promise<void>;
+  buttonText: string;
+  declaration: string;
+}
+
 // Notes
 export type NoteType = {
   id: number;

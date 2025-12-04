@@ -5,11 +5,12 @@ import {
   Navigate,
 } from "react-router-dom";
 import { AuthProvider, RequireAuth, RequireGuest } from "./context/AuthContext";
-import Login from "./pages/auth/Login";
-import SignUp from "./pages/auth/SignUp";
 import NavBar from "./components/Navbar";
 import Home from "./pages/home/Home";
 import Notes from "./pages/notes/Notes";
+import AuthPage from "./pages/auth/AuthPage";
+import LoginForm from "./pages/auth/LogInForm";
+import SignUpForm from "./pages/auth/SignUpForm";
 import { Toaster } from "react-hot-toast";
 
 export const App = () => {
@@ -18,13 +19,22 @@ export const App = () => {
       <Router>
         <Toaster position="top-right" />
         <NavBar />
+
         <Routes>
-          <Route path="/home" element={<Home />} />
+          {/* Public routes */}
+          <Route path="/" element={<Home />} />
           <Route
             path="/login"
             element={
               <RequireGuest>
-                <Login />
+                <AuthPage
+                  title="Log In"
+                  subtitle="Log in to continue to CoNote!"
+                  redirectText="Don't have an account?"
+                  redirectPath="/signup"
+                  redirectLinkText="Sign Up"
+                  FormComponent={LoginForm}
+                />
               </RequireGuest>
             }
           />
@@ -32,10 +42,19 @@ export const App = () => {
             path="/signup"
             element={
               <RequireGuest>
-                <SignUp />
+                <AuthPage
+                  title="Sign Up"
+                  subtitle="Create an account to use CoNote!"
+                  redirectText="Already have an account?"
+                  redirectPath="/login"
+                  redirectLinkText="Log In"
+                  FormComponent={SignUpForm}
+                />
               </RequireGuest>
             }
           />
+
+          {/* Protected routes */}
           <Route
             path="/notes"
             element={
@@ -44,7 +63,9 @@ export const App = () => {
               </RequireAuth>
             }
           />
-          <Route path="*" element={<Navigate to="/home" />} />
+
+          {/* Catch-all */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
     </AuthProvider>

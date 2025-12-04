@@ -1,34 +1,28 @@
-// ./context/AuthContext.tsx
-
-// Imports
 import { createContext, useState, useEffect, useContext, useMemo } from "react";
 import { Navigate } from "react-router-dom";
 import { refreshUser } from "../utils/authApi";
 import Loader from "../components/Loader";
-
-// Types
 import type { User, AuthContextType } from "../utils/types";
 
-// Create AuthContext
-export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined
-);
+export const AuthContext = createContext<AuthContextType>({
+  user: null,
+  token: "",
+  login: () => {},
+  logout: () => {},
+  fetchUserProfile: async () => null,
+  loading: true,
+});
 
-// Auth Provider
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string>(
-    localStorage.getItem("token") ?? ""
-  );
-  const [loading, setLoading] = useState<boolean>(true);
+  const [token, setToken] = useState(localStorage.getItem("token") ?? "");
+  const [loading, setLoading] = useState(true);
 
-  // Fetch user profile
   const fetchUserProfile = async () => {
     if (!token) return null;
     try {
-      setLoading(true);
       const res = await refreshUser();
       const data: User = res.data.content.user;
       setUser(data);
@@ -42,30 +36,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  // Hydrate user on reload
   useEffect(() => {
-    if (token) {
-      fetchUserProfile();
-    } else {
-      setLoading(false);
-    }
+    if (token) fetchUserProfile();
+    else setLoading(false);
   }, [token]);
 
-  // Login
   const login = (jwt: string, userData: User) => {
     localStorage.setItem("token", jwt);
     setToken(jwt);
     setUser(userData);
   };
 
-  // Logout
   const logout = () => {
     localStorage.removeItem("token");
     setToken("");
     setUser(null);
   };
 
-  // Provide context value
   const value = useMemo(
     () => ({ user, token, login, logout, fetchUserProfile, loading }),
     [user, token, loading]
@@ -74,36 +61,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-// RequireAuth wrapper
-export const RequireAuth: React.FC<{ children: React.ReactElement }> = ({
-  children,
-}) => {
-  const auth = useContext(AuthContext);
-
-  if (auth?.loading) {
-    return <Loader />;
-  }
-
-  if (!auth?.user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
+const withAuthGuard = (
+  condition: (auth: AuthContextType) => boolean,
+  redirect: string
+) => {
+  return ({ children }: { children: React.ReactElement }) => {
+    const auth = useContext(AuthContext);
+    if (auth.loading) return <Loader />;
+    if (!condition(auth)) return <Navigate to={redirect} replace />;
+    return children;
+  };
 };
 
-// RequireGuest wrapper
-export const RequireGuest: React.FC<{ children: React.ReactElement }> = ({
-  children,
-}) => {
-  const auth = useContext(AuthContext);
-
-  if (auth?.loading) {
-    return <Loader />;
-  }
-
-  if (auth?.user) {
-    return <Navigate to="/notes" replace />;
-  }
-
-  return children;
-};
+export const RequireAuth = withAuthGuard((auth) => !!auth.user, "/login");
+export const RequireGuest = withAuthGuard((auth) => !auth.user, "/notes");

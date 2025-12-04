@@ -1,5 +1,3 @@
-/* ./components/Navbar.css */
-
 .navbar {
   width: 80vw;
   padding: 1rem;
@@ -21,26 +19,26 @@
   z-index: 99;
 }
 
-.logo {
+.navbar__logo {
   font-size: 1.5rem;
   font-weight: 500;
   margin-left: 2rem;
 }
 
-.link,
-.logo {
+.navbar__link,
+.navbar__logo {
   text-decoration: none;
   color: var(--text-dark);
   transition: all 0.1s ease-in-out;
 }
 
-.links {
+.navbar__links {
   display: flex;
   gap: 2rem;
   margin-right: 2rem;
 }
 
-.logout-btn {
+.navbar__logoutBtn {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
 
@@ -51,8 +49,8 @@
   transition: all 0.1s ease-in-out;
 }
 
-.link:hover,
-.logout-btn:hover {
+.navbar__link:hover,
+.navbar__logoutBtn:hover {
   cursor: pointer;
   font-weight: 700;
 }

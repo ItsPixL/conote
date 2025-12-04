@@ -1,35 +1,35 @@
-// ./components/Navbar.tsx
-
-// Imports
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useLogout } from "../hooks/useLogout";
 import "./Navbar.css";
 
-// Navbar
 const Navbar = () => {
   const { user } = useAuth();
   const logout = useLogout();
 
+  const logoutBtn = (
+    <button onClick={logout} className="navbar__logoutBtn">
+      Logout
+    </button>
+  );
+
+  const loginBtn = (
+    <div className="navbar__links">
+      <Link to="/login" className="navbar__link">
+        Login
+      </Link>
+      <Link to="/signup" className="navbar__link">
+        Sign Up
+      </Link>
+    </div>
+  );
+
   return (
     <nav className="navbar">
-      <Link to="/home" className="logo">
+      <Link to={user ? "/notes" : "/home"} className="navbar__logo">
         CoNote
       </Link>
-      {user ? (
-        <button onClick={logout} className="logout-btn">
-          Logout
-        </button>
-      ) : (
-        <div className="links">
-          <Link to="/login" className="link">
-            Login
-          </Link>
-          <Link to="/signup" className="link">
-            Sign Up
-          </Link>
-        </div>
-      )}
+      {user ? logoutBtn : loginBtn}
     </nav>
   );
 };
