@@ -26,6 +26,8 @@ const CreateNoteForm = ({ closeForm }: CreateNoteFormProps) => {
     setNoteType("");
 
     toast.success("Note created successfully!");
+
+    window.location.reload();
   };
 
   return (
