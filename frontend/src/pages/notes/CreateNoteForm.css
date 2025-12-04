@@ -60,7 +60,7 @@
   border: none;
   border-radius: 6px;
   width: 20rem;
-  transition: transform 0.1s ease-in-out, background-color 0.1s linear,
+  transition: transform 0.1s ease-out, background-color 0.1s linear,
     color 0.1s linear;
 }
 

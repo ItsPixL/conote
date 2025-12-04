@@ -3,8 +3,9 @@
 .navbar {
   width: 80vw;
   padding: 1rem;
-
-  background-color: var(--bg-accent);
+  background: rgb(from var(--bg-accent) r g b / 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(5px);
 
   margin: 1.5rem auto;
   border-radius: 1rem;
@@ -26,16 +27,17 @@
   margin-left: 2rem;
 }
 
-.links {
-  display: flex;
-  gap: 2rem;
-  margin-right: 2rem;
-}
-
 .link,
 .logo {
   text-decoration: none;
   color: var(--text-dark);
+  transition: all 0.1s ease-in-out;
+}
+
+.links {
+  display: flex;
+  gap: 2rem;
+  margin-right: 2rem;
 }
 
 .logout-btn {
@@ -46,11 +48,11 @@
   color: var(--text-dark);
 
   background-color: transparent;
-  transition: transform 0.1s ease-in-out, background-color 0.1s linear,
-    color 0.1s linear;
+  transition: all 0.1s ease-in-out;
 }
 
+.link:hover,
 .logout-btn:hover {
-  background-color: var(--accent-1);
   cursor: pointer;
+  font-weight: 700;
 }
