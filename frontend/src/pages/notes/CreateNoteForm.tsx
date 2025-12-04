@@ -2,10 +2,12 @@
 
 // Imports
 import { useState } from "react";
+import toast from "react-hot-toast";
 import "./CreateNoteForm.css";
 
 // Types
-import type { CreateNoteFormProps } from "../../utils/types";
+import { type CreateNoteFormProps } from "../../utils/types";
+import { createNewNote } from "../../utils/notesApi";
 
 // Create Note Form
 const CreateNoteForm = ({ closeForm }: CreateNoteFormProps) => {
@@ -15,6 +17,8 @@ const CreateNoteForm = ({ closeForm }: CreateNoteFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    createNewNote(title, description, noteType);
 
     const newNote = {
       title,
@@ -27,6 +31,8 @@ const CreateNoteForm = ({ closeForm }: CreateNoteFormProps) => {
     setTitle("");
     setDescription("");
     setNoteType("");
+
+    toast.success("Note created successfully!");
   };
 
   return (
@@ -65,7 +71,7 @@ const CreateNoteForm = ({ closeForm }: CreateNoteFormProps) => {
             <option value="unstructured">Unstructured (Whiteboard)</option>
           </select>
 
-          <button type="submit">Save Note</button>
+          <button type="submit">Create Note</button>
         </form>
         <button onClick={closeForm} className="close-btn">
           Close
