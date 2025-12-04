@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_socketio import SocketIO
 from datetime import timedelta
-from models import db
+from models import db, User, Note, Permission, Content, Version
 import os
 
 app = Flask(__name__)
@@ -33,4 +33,5 @@ if __name__ == "__main__":
     register_bp(app)
     with app.app_context():
         db.create_all()
+        print(db.metadata.tables.keys())
     socketio.run(app, port=8000)

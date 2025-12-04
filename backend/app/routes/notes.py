@@ -4,7 +4,7 @@ from models import User, Note, Permission, Content
 from datetime import datetime, timezone
 from models import db
 from app import socketio
-from utils.upload_files import upload_file_to_s3
+# from utils.upload_files import upload_file_to_s3
 
 notes_bp = Blueprint("notes", __name__)
 
@@ -83,10 +83,19 @@ def create_note():
         return jsonify({"success": False, "message": "Title must be provided."}), 401
     
     note = Note(user_id=user.id, title=title, description=description, noteType=noteType)
-    permission = Permission(user_id=user.id, note_id=note.id, permission=3)
     db.session.add(note)
+    db.session.flush()
+    permission = Permission(user_id=user.id, note_id=note.id, permission=3)
     db.session.add(permission)
-    db.session.commit()
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print("DB Error: ", e)
+
+    print(note.to_dict())
+    print(permission.to_dict())
 
     return jsonify({
         "success": True,
