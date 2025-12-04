@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
+from sqlalchemy.dialects.postgresql import JSON # ARRAY as well for production
 
 db = SQLAlchemy()
 
@@ -32,11 +33,12 @@ class Note(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     title = db.Column(db.String(50))
     description = db.Column(db.String(250))
-    content = db.Column(db.Text)
+    noteType = db.Column(db.String(25))
     createdTime = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     updatedTime = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     permissions = db.relationship('Permission', backref='note', lazy=True)
     versions = db.relationship('Version', backref='note', lazy=True)
+    contents = db.relationship('Content', backref='note', lazy=True)
 
     def to_dict(self):
         return {
@@ -44,9 +46,29 @@ class Note(db.Model):
             "userId": self.user_id,
             "title": self.title,
             "description": self.description,
-            "content": self.content,
+            "noteType": self.noteType,
             "createdTime": self.createdTime,
             "updatedTime": self.updatedTime
+        }
+
+class Content(db.Model):
+    __tablename__ = "contents"
+    id = db.Column(db.Integer, primary_key=True)
+    note_id = db.Column(db.Integer, db.ForeignKey('notes.id'), nullable=False)
+    text = db.Column(db.Text)
+    imageUrl = db.Column(db.String(250))
+    contentType = "text" if text is not None else "image"
+    coordPos = db.Column(JSON) # Order is: [x, y, width, height] (width and height reserved for images)
+    # coordPos = db.Column(ARRAY(db.Float)) 
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "noteId": self.note_id,
+            "text": self.text,
+            "imageUrl": self.imageUrl,
+            "contentType": self.contentType,
+            "coordPos": self.coordPos,
         }
 
 class Permission(db.Model):
@@ -63,13 +85,12 @@ class Permission(db.Model):
             "noteId": self.note_id,
             "permission": self.permission
         }
-    
 
 class Version(db.Model):
     __tablename__ = "versions"
     id = db.Column(db.Integer, primary_key=True)
     note_id = db.Column(db.Integer, db.ForeignKey('notes.id'), nullable=False)
-    content_snapshot = db.Column(db.Text)
+    content_snapshot = db.Column(JSON)
     timestamp = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     def to_dict(self):

@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager
 from flask_socketio import SocketIO
 from datetime import timedelta
 from models import db
+import os
 
 app = Flask(__name__)
 CORS(
@@ -18,6 +19,10 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = "shivansh"
 app.config['JWT_SECRET_KEY'] = 'jwt-secret'
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=5)
+app.config["S3_BUCKET"] = os.getenv("S3_BUCKET_NAME")
+app.config["S3_KEY"] = os.getenv("AWS_ACCESS_KEY_ID")
+app.config["S3_SECRET"] = os.getenv("AWS_SECRET_ACCESS_KEY")
+app.config["S3_LOCATION"] = f"https://{app.config['S3_BUCKET']}.s3.amazonaws.com/"
 socketio = SocketIO(app)
 
 db.init_app(app)
