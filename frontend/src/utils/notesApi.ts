@@ -15,6 +15,10 @@ export const createNewNote = async (
   description: any,
   noteType: any
 ) => {
-  const response = await jwtApi.post("/create", title, description);
+  const response = await jwtApi.post("/note/create", {
+    title,
+    description,
+    noteType,
+  });
   return response.data;
 };

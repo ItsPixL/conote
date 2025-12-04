@@ -15,18 +15,11 @@ const CreateNoteForm = ({ closeForm }: CreateNoteFormProps) => {
   const [description, setDescription] = useState<string>("");
   const [noteType, setNoteType] = useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    createNewNote(title, description, noteType);
-
-    const newNote = {
-      title,
-      description,
-      type: noteType,
-    };
-
-    console.log("New Note:", newNote);
+    const res = await createNewNote(title, description, noteType);
+    console.log(res);
 
     setTitle("");
     setDescription("");
