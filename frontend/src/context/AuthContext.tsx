@@ -30,7 +30,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       setLoading(true);
       const res = await refreshUser();
-      const data: User = res.data.data.user;
+      const data: User = res.data.content.user;
       setUser(data);
       return data;
     } catch (err) {
