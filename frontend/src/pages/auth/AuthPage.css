@@ -13,7 +13,7 @@
   padding: 3rem 2rem;
 
   border-radius: 1.5rem;
-  background-color: var(--bg-accent);
+  background-color: var(--bg-translucent);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 
   display: flex;
@@ -39,12 +39,12 @@
 .auth-text a {
   text-decoration: underline;
   cursor: pointer;
-  color: var(--accent-1);
-  transition: color 0.2s ease-in-out;
+  color: var(--accent-2);
+  transition: color 0.1s ease-in-out;
 }
 
 .auth-text a:hover {
-  color: var(--accent-2);
+  color: var(--accent-1);
 }
 
 .auth-form {

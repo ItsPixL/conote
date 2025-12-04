@@ -1,7 +1,40 @@
+/* body {
+  background: linear-gradient(
+    135deg,
+    var(--bg-color),
+    var(--bg-accent),
+    var(--accent-3),
+    var(--accent-4),
+    var(--accent-5)
+  );
+  background-size: 800% 800%;
+  animation: gradientBreath 20s ease-in-out infinite;
+}
+
+@keyframes gradientBreath {
+  0%,
+  100% {
+    background-size: 200% 200%;
+    background-position: 0% 50%;
+  }
+  50% {
+    background-size: 250% 250%;
+    background-position: 100% 50%;
+  }
+} */
+
+body {
+  background-image: radial-gradient(var(--bg-accent) 1px, transparent 1px),
+    radial-gradient(var(--accent-3) 1px, transparent 1px);
+  background-size: 24px 24px, 48px 48px;
+  background-position: 0 0, 12px 12px;
+}
+
 :root {
   /* Backgrounds */
   --bg-color: #e9edf2;
   --bg-accent: #d1dae6;
+  --bg-translucent: rgb(209, 218, 230, 0.7);
 
   /* Text */
   --text-dark: #1a1a1a;
@@ -13,8 +46,7 @@
   --accent-2: #4f7ac2;
 
   /* Extra Accents */
-  --accent-3: #f28c8c;
-  --accent-4: #7fd1b9;
-  --accent-5: #f2c94c;
-  --accent-6: #9b6ef3;
+  --accent-3: #a3c4f3;
+  --accent-4: #c9e4ff;
+  --accent-5: #edf6ff;
 }
