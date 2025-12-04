@@ -4,7 +4,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { AuthProvider, RequireAuth } from "./context/AuthContext";
+import { AuthProvider, RequireAuth, RequireGuest } from "./context/AuthContext";
 import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/SignUp";
 import NavBar from "./components/Navbar";
@@ -20,8 +20,22 @@ export const App = () => {
         <NavBar />
         <Routes>
           <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route
+            path="/login"
+            element={
+              <RequireGuest>
+                <Login />
+              </RequireGuest>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <RequireGuest>
+                <SignUp />
+              </RequireGuest>
+            }
+          />
           <Route
             path="/notes"
             element={

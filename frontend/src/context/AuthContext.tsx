@@ -90,3 +90,20 @@ export const RequireAuth: React.FC<{ children: React.ReactElement }> = ({
 
   return children;
 };
+
+// RequireGuest wrapper
+export const RequireGuest: React.FC<{ children: React.ReactElement }> = ({
+  children,
+}) => {
+  const auth = useContext(AuthContext);
+
+  if (auth?.loading) {
+    return <Loader />;
+  }
+
+  if (auth?.user) {
+    return <Navigate to="/notes" replace />;
+  }
+
+  return children;
+};
