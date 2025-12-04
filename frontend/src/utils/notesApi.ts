@@ -8,3 +8,17 @@ export const getUserNotes = async () => {
   const response = await jwtApi.get("/note/");
   return response.data;
 };
+
+// Create New Note
+export const createNewNote = async (
+  title: any,
+  description: any,
+  noteType: any
+) => {
+  const response = await jwtApi.post("/note/create", {
+    title,
+    description,
+    noteType,
+  });
+  return response.data;
+};

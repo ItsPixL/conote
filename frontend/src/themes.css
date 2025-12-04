@@ -1,9 +1,20 @@
 :root {
-  --bg-color: #e0e5ec;
-  --bg-accent: #c5d6e8;
-  --text-dark: #000000;
-  --text-light: #cfd8de;
-  --text-grey-d: #3e3e3e;
-  --accent-1: #6a90c9;
-  --accent-2: #4973b1;
+  /* Backgrounds */
+  --bg-color: #e9edf2;
+  --bg-accent: #d1dae6;
+
+  /* Text */
+  --text-dark: #1a1a1a;
+  --text-light: #f5f7fa;
+  --text-grey-d: #4a4a4a;
+
+  /* Primary Accents */
+  --accent-1: #7fa9e8;
+  --accent-2: #4f7ac2;
+
+  /* Extra Accents */
+  --accent-3: #f28c8c;
+  --accent-4: #7fd1b9;
+  --accent-5: #f2c94c;
+  --accent-6: #9b6ef3;
 }

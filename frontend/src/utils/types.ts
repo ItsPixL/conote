@@ -16,7 +16,7 @@ export interface LoginData {
 }
 
 type LoginSuccessPayload = {
-  data: {
+  content: {
     token: string;
     user: User;
   };
@@ -54,4 +54,8 @@ export type NoteType = {
   description: string;
   createdTime: string;
   updatedTime: string;
+};
+
+export type CreateNoteFormProps = {
+  closeForm: () => void;
 };

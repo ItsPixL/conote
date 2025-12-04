@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 // Types
-import { type SignUpData } from "../../utils/types";
+import type { SignUpData } from "../../utils/types";
 
 // Sign Up Form
 const SignupForm = () => {

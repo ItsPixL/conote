@@ -4,9 +4,10 @@
 import { createContext, useState, useEffect, useContext, useMemo } from "react";
 import { Navigate } from "react-router-dom";
 import { refreshUser } from "../utils/authApi";
+import Loader from "../components/Loader";
 
 // Types
-import { type User, type AuthContextType } from "../utils/types";
+import type { User, AuthContextType } from "../utils/types";
 
 // Create AuthContext
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -29,7 +30,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       setLoading(true);
       const res = await refreshUser();
-      const data: User = res.data.data.user;
+      const data: User = res.data.content.user;
       setUser(data);
       return data;
     } catch (err) {
@@ -80,7 +81,7 @@ export const RequireAuth: React.FC<{ children: React.ReactElement }> = ({
   const auth = useContext(AuthContext);
 
   if (auth?.loading) {
-    return <div>Loading...</div>; // CHANGE THIS WHEN YOU BUILD THE LOADER -------------------------------------------------------------------
+    return <Loader />;
   }
 
   if (!auth?.user) {
