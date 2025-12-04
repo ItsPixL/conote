@@ -1,17 +1,11 @@
-// ./pages/notes/Notes.tsx
-
-// Imports
+import Note from "./Note";
+import CreateNoteForm from "./CreateNoteForm";
 import { useState, useEffect } from "react";
 import { getUserNotes } from "../../utils/notesApi";
 import { toast } from "react-hot-toast";
-import Note from "./Note";
-import CreateNoteForm from "./CreateNoteForm";
+import type { NoteType } from "../../utils/types";
 import "./Notes.css";
 
-// Types
-import type { NoteType } from "../../utils/types";
-
-// Notes
 const Notes = () => {
   const [notes, setNotes] = useState<NoteType[]>([]);
   const [message, setMessage] = useState<string>("");
@@ -34,21 +28,21 @@ const Notes = () => {
   }, []);
 
   return (
-    <div className="notes-page">
-      <h2 className="message">{message}</h2>
+    <div className="notes">
+      <h2 className="notes__message">{message}</h2>
       {createNotePopup ? (
         <CreateNoteForm
           closeForm={() => setCreateNotePopup(!createNotePopup)}
         />
       ) : (
         <button
-          className="create-note-btn"
+          className="notes__createNoteBtn"
           onClick={() => setCreateNotePopup(!createNotePopup)}
         >
           <span className="material-symbols-outlined">add</span>
         </button>
       )}
-      <div className="notes">
+      <div className="notes__grid">
         {notes && notes.length > 0 ? (
           notes.map((note: NoteType) => (
             <Note

@@ -17,9 +17,9 @@ const AuthPage: React.FC<AuthPageProps> = ({
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-box">
-        <div className="auth-text">
+    <div className="auth">
+      <div className="auth__box">
+        <div className="auth__box__text">
           <h1>{title}</h1>
           <p>{subtitle}</p>
           <p>

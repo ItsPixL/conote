@@ -32,7 +32,7 @@ const AuthForm = <T extends LoginData | SignUpData>({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="auth-form">
+    <form onSubmit={handleSubmit} className="auth__form">
       {fields.map(({ name, type = "text", placeholder }) => (
         <input
           key={name}
@@ -46,8 +46,8 @@ const AuthForm = <T extends LoginData | SignUpData>({
       ))}
 
       <button type="submit">{buttonText}</button>
-      <p className="auth-declaration">{declaration}</p>
-      <p className="auth-error">{error || "\u00A0"}</p>
+      <p className="auth__form__declaration">{declaration}</p>
+      <p className="auth__form__error">{error || "\u00A0"}</p>
     </form>
   );
 };

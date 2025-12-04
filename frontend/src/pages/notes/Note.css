@@ -16,7 +16,7 @@
   background-color: var(--accent-1);
 }
 
-.thumbnail {
+.note__thumbnail {
   width: 100%;
   aspect-ratio: 1 / 1;
   background-color: #fff;
@@ -25,29 +25,29 @@
   margin-bottom: 1rem;
 }
 
-.thumbnail img {
+.note__thumbnail img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.title {
+.note__title {
   font-weight: bold;
   font-size: larger;
   margin-bottom: 0.5rem;
 }
 
-.description {
+.note__description {
   margin-bottom: 0.5rem;
 }
 
-.title,
-.description {
+.note__title,
+.note__description {
   white-space: normal;
 }
 
-.time {
+.note__time {
   font-size: small;
   color: var(--text-grey-d);
 }

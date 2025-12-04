@@ -1,9 +1,5 @@
-// ./pages/home/Home.tsx
-
-// Imports
 import "./Home.css";
 
-// Home
 const Home = () => {
   return (
     <main>

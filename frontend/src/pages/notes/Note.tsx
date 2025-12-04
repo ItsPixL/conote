@@ -1,11 +1,6 @@
-// ./pages/notes/Note.tsx
-
-// Imports
 import { formatDate } from "../../utils/formatDate";
+import type { NoteType } from "../../utils/types";
 import "./Note.css";
-
-// Types
-import { type NoteType } from "../../utils/types";
 
 // Note
 const Note = ({
@@ -19,10 +14,10 @@ const Note = ({
 }: NoteType) => {
   return (
     <div className="note">
-      <div className="thumbnail"></div>
-      <div className="title">{title}</div>
-      <div className="description">{description}</div>
-      <div className="time">Last Updated: {formatDate(updatedTime)}</div>
+      <div className="note__thumbnail"></div>
+      <div className="note__title">{title}</div>
+      <div className="note__description">{description}</div>
+      <div className="note__time">Last Updated: {formatDate(updatedTime)}</div>
     </div>
   );
 };

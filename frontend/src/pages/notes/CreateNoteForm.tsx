@@ -1,15 +1,9 @@
-// ./notes/CreateNoteForm.tsx
-
-// Imports
 import { useState } from "react";
 import toast from "react-hot-toast";
-import "./CreateNoteForm.css";
-
-// Types
-import { type CreateNoteFormProps } from "../../utils/types";
 import { createNewNote } from "../../utils/notesApi";
+import "./CreateNoteForm.css";
+import type { CreateNoteFormProps } from "../../utils/types";
 
-// Create Note Form
 const CreateNoteForm = ({ closeForm }: CreateNoteFormProps) => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");

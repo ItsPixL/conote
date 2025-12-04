@@ -1,19 +1,17 @@
-/* ./pages/notes/Notes.css */
-
-.notes-page {
+.notes {
   padding-top: 8rem;
   width: 80vw;
   margin: 0 auto;
 }
 
-.message {
+.notes__message {
   font-size: 3.5rem;
   font-weight: 500;
   text-align: center;
   margin-bottom: 2rem;
 }
 
-.create-note-btn {
+.notes__createNoteBtn {
   background-color: var(--accent-1);
   position: fixed;
   bottom: 5rem;
@@ -29,16 +27,16 @@
   transition: transform 0.1s ease-in-out, background-color 0.1s ease-in-out;
 }
 
-.create-note-btn:hover {
+.notes__createNoteBtn:hover {
   transform: scale(1.2);
   background-color: var(--accent-2);
 }
 
-.create-note-btn span {
+.notes__createNoteBtn span {
   font-size: 2.9rem;
 }
 
-.create-note-btn::after {
+.notes__createNoteBtn::after {
   content: "New Note";
   position: absolute;
   right: calc(100% + 0.8rem);
@@ -58,12 +56,12 @@
   transition: opacity 0.18s ease, transform 0.18s ease;
 }
 
-.create-note-btn:hover::after {
+.notes__createNoteBtn:hover::after {
   opacity: 1;
   transform: translateY(50%) translateX(0);
 }
 
-.notes {
+.notes__grid {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, 250px);

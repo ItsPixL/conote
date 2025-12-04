@@ -1,4 +1,4 @@
-.auth-page {
+.auth {
   height: 100vh;
   margin: 0;
 
@@ -7,7 +7,7 @@
   align-items: center;
 }
 
-.auth-box {
+.auth__box {
   width: 100%;
   max-width: 500px;
   padding: 3rem 2rem;
@@ -21,33 +21,33 @@
   align-items: center;
 }
 
-.auth-text {
+.auth__box__text {
   margin: 1.5rem auto;
   text-align: center;
 }
 
-.auth-text h1 {
+.auth__box__text h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
 }
 
-.auth-text p {
+.auth__box__text p {
   font-size: 1rem;
   line-height: 1.5rem;
 }
 
-.auth-text a {
+.auth__box__text a {
   text-decoration: underline;
   cursor: pointer;
   color: var(--accent-2);
   transition: color 0.1s ease-in-out;
 }
 
-.auth-text a:hover {
+.auth__box__text a:hover {
   color: var(--accent-1);
 }
 
-.auth-form {
+.auth__form {
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
@@ -57,14 +57,14 @@
   gap: 1rem;
 }
 
-.auth-form input {
+.auth__form input {
   padding: 0.9rem 0.7rem;
   border-radius: 0.5rem;
   border: 1px solid var(--accent-1);
   font-size: 1rem;
 }
 
-.auth-form button {
+.auth__form button {
   padding: 0.8rem;
   font-size: 1.1rem;
   border-radius: 0.5rem;
@@ -76,14 +76,14 @@
   transition: all 0.1s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.auth-form button:hover {
+.auth__form button:hover {
   transform: scale(1.02);
   background-color: var(--accent-2);
   color: var(--text-light);
   cursor: pointer;
 }
 
-.auth-declaration {
+.auth__form__declaration {
   color: var(--text-grey-d);
   width: 80%;
   margin: 1rem auto 0;
@@ -91,7 +91,7 @@
   text-align: center;
 }
 
-.auth-error {
+.auth__form__error {
   text-align: center;
   color: red;
   min-height: 1.5em;
