@@ -32,7 +32,23 @@
   display: block;
 }
 
-.note__title {
+.note__titleCont {
+  display: flex;
+  justify-content: space-between;
+}
+
+.note__titleCont span {
+  font-size: 1.3rem;
+  z-index: 9999;
+  transition: all 0.1s ease-out;
+}
+
+.note__titleCont span:hover {
+  color: red;
+  transform: scale(1.2);
+}
+
+.note__titleCont__title {
   font-weight: bold;
   font-size: larger;
   margin-bottom: 0.5rem;
@@ -42,7 +58,7 @@
   margin-bottom: 0.5rem;
 }
 
-.note__title,
+.note__titleCont__title,
 .note__description {
   white-space: normal;
 }
