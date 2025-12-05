@@ -11,8 +11,8 @@ class User(db.Model):
     username = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
-    notes = db.relationship('Note', backref='user', lazy=True)
-    permissions = db.relationship('Permission', backref='user', lazy=True)
+    notes = db.relationship('Note', backref='user', lazy=True, cascade="all, delete-orphan")
+    permissions = db.relationship('Permission', backref='user', lazy=True, cascade="all, delete-orphan")
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -36,9 +36,9 @@ class Note(db.Model):
     noteType = db.Column(db.String(25))
     createdTime = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     updatedTime = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
-    permissions = db.relationship('Permission', backref='note', lazy=True)
-    versions = db.relationship('Version', backref='note', lazy=True)
-    contents = db.relationship('Content', backref='note', lazy=True)
+    permissions = db.relationship('Permission', backref='note', lazy=True, cascade="all, delete-orphan")
+    versions = db.relationship('Version', backref='note', lazy=True, cascade="all, delete-orphan")
+    contents = db.relationship('Content', backref='note', lazy=True, cascade="all, delete-orphan")
 
     def to_dict(self):
         return {
@@ -83,7 +83,7 @@ class Permission(db.Model):
             "id": self.id,
             "userId": self.user_id,
             "noteId": self.note_id,
-            "permission": self.permission
+            "permission": self.permission, 
         }
 
 class Version(db.Model):
