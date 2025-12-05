@@ -23,9 +23,9 @@ def validate(user="*", note="*", target_user="*", sharer_permission="*", sharing
     return None
 
 
-def check_permission(note, user, level):
+def check_permission(user, note, level):
     permission = Permission.query.filter_by(user_id=user.id, note_id=note.id).first()
-    if not permission or permission.permission < level: # Doesn't have at least edit access
+    if not permission or permission.permission < level: # Doesn't have required access
         return False
     return True
 
@@ -107,7 +107,7 @@ def update_note(note_id):
     if validate_errors:
         return jsonify({"success": False, "message": validate_errors["message"]}), validate_errors["status"]
     
-    if not check_permission(note, user, 2):
+    if not check_permission(user, note, 2):
         return jsonify({"success": False, "message": "Access denied due to insufficient permissions"}), 403
 
     data = request.get_json()
@@ -142,7 +142,7 @@ def delete_note(note_id):
     
     if not check_permission(user, note, 3):
         return jsonify({"success": False, "message": "Only the note owner can delete the note!"}), 403
-
+    
     db.session.delete(note)
     db.session.commit()
 
@@ -168,7 +168,7 @@ def share_note(note_id):
     if validate_errors:
         return jsonify({"success": False, "message": validate_errors["message"]}), validate_errors["status"]
     
-    if not check_permission(note, user, 2):
+    if not check_permission(user, note, 2):
         return jsonify({"success": False, "message": "Access denied due to insufficient permissions"}), 403
     
     permission_level = data.get("permission")

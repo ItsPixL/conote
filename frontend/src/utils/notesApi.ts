@@ -22,3 +22,9 @@ export const createNewNote = async (
   });
   return response.data;
 };
+
+// Delete Note
+export const deleteNote = async (noteId: any) => {
+  const response = await jwtApi.delete(`/note/${noteId}`);
+  return response.data;
+};

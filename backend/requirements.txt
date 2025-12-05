@@ -10,4 +10,4 @@ psycopg2-binary
 PyJWT
 pytest
 boto3
-genai
+google.generativeai
