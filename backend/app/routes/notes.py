@@ -24,7 +24,9 @@ def validate(user="*", note="*", target_user="*", sharer_permission="*", sharing
 
 
 def check_permission(note, user, level):
+    print(note, user)
     permission = Permission.query.filter_by(user_id=user.id, note_id=note.id).first()
+    print(permission, permission.permission)
     if not permission or permission.permission < level: # Doesn't have at least edit access
         return False
     return True
