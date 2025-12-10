@@ -90,10 +90,3 @@
   font-size: 0.9rem;
   text-align: center;
 }
-
-.auth__form__error {
-  text-align: center;
-  color: red;
-  min-height: 1.5em;
-  font-size: 0.9rem;
-}

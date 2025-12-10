@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import type { LoginData, SignUpData, Field } from "../../utils/types";
 
 interface AuthFormProps<T> {
@@ -15,7 +16,6 @@ const AuthForm = <T extends LoginData | SignUpData>({
   declaration,
 }: AuthFormProps<T>) => {
   const [formData, setFormData] = useState<T>({} as T);
-  const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value } as T);
@@ -23,11 +23,10 @@ const AuthForm = <T extends LoginData | SignUpData>({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError("");
     try {
       await onSubmit(formData);
     } catch (err: any) {
-      setError(err.message || "Something went wrong");
+      toast.error(err.response.data.message);
     }
   };
 
@@ -47,7 +46,6 @@ const AuthForm = <T extends LoginData | SignUpData>({
 
       <button type="submit">{buttonText}</button>
       <p className="auth__form__declaration">{declaration}</p>
-      <p className="auth__form__error">{error || "\u00A0"}</p>
     </form>
   );
 };
