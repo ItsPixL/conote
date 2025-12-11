@@ -28,16 +28,16 @@ const NoteThumbnail = ({
   };
 
   return (
-    <div className="note" onClick={openNote}>
-      <div className="note__thumbnail"></div>
+    <div className="note__thumbnail" onClick={openNote}>
+      <div className="note__thumbnail__img"></div>
 
-      <div className="note__titleCont">
-        <div className="note__titleCont__title">{title}</div>
+      <div className="note__thumbnail__titleCont">
+        <div className="note__thumbnail__titleCont__title">{title}</div>
 
         <span
           className="material-symbols-outlined"
           onClick={(e) => {
-            e.stopPropagation(); // prevents opening the note
+            e.stopPropagation(); // prevents opening the note__thumbnail
             onDelete();
           }}
         >
@@ -45,8 +45,10 @@ const NoteThumbnail = ({
         </span>
       </div>
 
-      <div className="note__description">{description}</div>
-      <div className="note__time">Last Updated: {formatDate(updatedTime)}</div>
+      <div className="note__thumbnail__description">{description}</div>
+      <div className="note__thumbnail__time">
+        Last Updated: {formatDate(updatedTime)}
+      </div>
     </div>
   );
 };
