@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 import { formatDate } from "../../utils/formatDate";
 import { deleteNote } from "../../utils/notesApi";
 import type { NoteType } from "../../utils/types";
-import "./Note.css";
+import "./NoteThumbnail.css";
 
 // Note
 const Note = ({

@@ -1,4 +1,4 @@
-import Note from "./Note";
+import Note from "./NoteThumbnail";
 import CreateNoteForm from "./CreateNoteForm";
 import { useState, useEffect } from "react";
 import { getUserNotes } from "../../utils/notesApi";
