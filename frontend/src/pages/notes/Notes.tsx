@@ -15,7 +15,6 @@ const Notes = () => {
     const fetchNotes = async () => {
       try {
         const data = await getUserNotes();
-        console.log(data);
         setNotes(data.content.notes ? data.content.notes : []);
         setMessage(data.message);
       } catch (err) {

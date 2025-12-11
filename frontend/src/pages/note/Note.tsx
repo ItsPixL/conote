@@ -1,7 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getSingleNote } from "../../utils/notesApi";
+import StructuredNoteEditor from "./StructuredNoteEditor";
+import Loader from "../../components/Loader";
 import type { NoteType } from "../../utils/types";
+import "./Note.css";
 
 const Note = () => {
   const { noteId } = useParams();
@@ -16,12 +19,13 @@ const Note = () => {
     fetchNote();
   }, [noteId]);
 
-  if (!note) return <div>Loading...</div>;
+  if (!note) return <Loader />;
 
   return (
     <div>
       <h1>{note.title}</h1>
       <p>{note.content}</p>
+      <StructuredNoteEditor />
     </div>
   );
 };
