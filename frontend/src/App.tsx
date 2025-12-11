@@ -8,6 +8,7 @@ import { AuthProvider, RequireAuth, RequireGuest } from "./context/AuthContext";
 import NavBar from "./components/Navbar";
 import Home from "./pages/home/Home";
 import Notes from "./pages/notes/Notes";
+import Note from "./pages/notes/Notes";
 import AuthPage from "./pages/auth/AuthPage";
 import LoginForm from "./pages/auth/LogInForm";
 import SignUpForm from "./pages/auth/SignUpForm";
@@ -60,6 +61,14 @@ export const App = () => {
             element={
               <RequireAuth>
                 <Notes />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/notes/:noteId"
+            element={
+              <RequireAuth>
+                <Note />
               </RequireAuth>
             }
           />
