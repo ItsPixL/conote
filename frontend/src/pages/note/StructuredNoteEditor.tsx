@@ -11,8 +11,8 @@ export default function StructuredNoteEditor() {
 
   return (
     <div className="editor-wrapper">
-      <Toolbar editor={editor} />
-      <EditorContent editor={editor} />
+      {editor && <Toolbar editor={editor} />}
+      <EditorContent editor={editor} className="editor-content" />
     </div>
   );
 }

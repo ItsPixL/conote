@@ -22,9 +22,9 @@ const Note = () => {
   if (!note) return <Loader />;
 
   return (
-    <div>
-      <h1>{note.title}</h1>
-      <p>{note.content}</p>
+    <div className="note">
+      <h1 className="note__title">{note.title}</h1>
+      <h1 className="note__desc">{note.description}</h1>
       <StructuredNoteEditor />
     </div>
   );

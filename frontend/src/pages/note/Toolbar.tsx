@@ -1,62 +1,82 @@
+import { useEffect, useState } from "react";
+
 const Toolbar = ({ editor }: any) => {
+  const [, setRerender] = useState(0);
+
+  useEffect(() => {
+    if (!editor) return;
+
+    const update = () => setRerender((x) => x + 1);
+
+    editor.on("selectionUpdate", update);
+    editor.on("transaction", update);
+
+    return () => {
+      editor.off("selectionUpdate", update);
+      editor.off("transaction", update);
+    };
+  }, [editor]);
+
   if (!editor) return null;
 
   return (
     <div className="toolbar">
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
-        disabled={!editor.can().chain().focus().toggleBold().run()}
         className={editor.isActive("bold") ? "active" : ""}
       >
-        Bold
+        <span className="material-symbols-outlined">format_bold</span>
       </button>
 
       <button
         onClick={() => editor.chain().focus().toggleItalic().run()}
-        disabled={!editor.can().chain().focus().toggleItalic().run()}
         className={editor.isActive("italic") ? "active" : ""}
       >
-        Italic
+        <span className="material-symbols-outlined">format_italic</span>
       </button>
 
       <button
         onClick={() => editor.chain().focus().toggleUnderline().run()}
         className={editor.isActive("underline") ? "active" : ""}
       >
-        Underline
+        <span className="material-symbols-outlined">format_underlined</span>
       </button>
 
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
         className={editor.isActive("heading", { level: 1 }) ? "active" : ""}
       >
-        H1
+        <span className="material-symbols-outlined">format_h1</span>
       </button>
 
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
         className={editor.isActive("heading", { level: 2 }) ? "active" : ""}
       >
-        H2
+        <span className="material-symbols-outlined">format_h2</span>
       </button>
 
       <button
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         className={editor.isActive("bulletList") ? "active" : ""}
       >
-        • List
+        <span className="material-symbols-outlined">format_list_bulleted</span>
       </button>
 
       <button
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
         className={editor.isActive("orderedList") ? "active" : ""}
       >
-        1. List
+        <span className="material-symbols-outlined">format_list_numbered</span>
       </button>
 
-      <button onClick={() => editor.chain().focus().undo().run()}>Undo</button>
+      <button onClick={() => editor.chain().focus().undo().run()}>
+        <span className="material-symbols-outlined">undo</span>
+      </button>
 
-      <button onClick={() => editor.chain().focus().redo().run()}>Redo</button>
+      <button onClick={() => editor.chain().focus().redo().run()}>
+        <span className="material-symbols-outlined">redo</span>
+      </button>
     </div>
   );
 };
