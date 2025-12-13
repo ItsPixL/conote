@@ -25,7 +25,11 @@ const Note = () => {
     <div className="note">
       <h1 className="note__title">{note.title}</h1>
       <h1 className="note__desc">{note.description}</h1>
-      <StructuredNoteEditor />
+      <StructuredNoteEditor
+        note={note}
+        setNote={setNote}
+        noteId={noteId ? noteId : ""}
+      />
     </div>
   );
 };

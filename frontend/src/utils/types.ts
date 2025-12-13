@@ -1,7 +1,8 @@
 // ./utils/types.ts
 
 // Imports
-import { type AxiosResponse } from "axios";
+import type { AxiosResponse } from "axios";
+import type { Dispatch, SetStateAction } from "react";
 
 // Base
 export interface User {
@@ -80,4 +81,10 @@ export type NoteType = {
 
 export type CreateNoteFormProps = {
   closeForm: () => void;
+};
+
+export type StrucNoteEditorProps = {
+  note: NoteType;
+  setNote: Dispatch<SetStateAction<NoteType | null>>;
+  noteId: string;
 };

@@ -34,3 +34,9 @@ export const getSingleNote = async (noteId: any) => {
   const response = await jwtApi.get(`/note/${noteId}`);
   return response.data;
 };
+
+// Update note
+export const updateNote = async (noteId: any, content: any) => {
+  const response = await jwtApi.patch(`/note/${noteId}`, { content });
+  return response.data;
+};
