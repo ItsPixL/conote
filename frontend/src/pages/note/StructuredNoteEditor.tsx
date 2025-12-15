@@ -1,49 +1,45 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
-import { useEffect, useState } from "react";
-import Toolbar from "./Toolbar";
-import { updateNote } from "../../utils/notesApi";
-import type { StrucNoteEditorProps } from "../../utils/types";
 
-export default function StructuredNoteEditor({
-  note,
-  setNote,
-  noteId,
-}: StrucNoteEditorProps) {
-  const [debouncedContent, setDebouncedContent] = useState(note.content);
+import Collaboration from "@tiptap/extension-collaboration";
+import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
+
+import * as Y from "yjs";
+import { WebsocketProvider } from "y-websocket";
+
+export default function StructuredNoteEditor({ noteId, user }: any) {
+  // Create Y.Doc
+  const ydoc = new Y.Doc();
+
+  // Connect to backend WebSocket server
+  const provider = new WebsocketProvider(
+    "ws://127.0.0.1:8000/ws", // FOR SHIVANSH
+    noteId,
+    ydoc
+  );
 
   const editor = useEditor({
-    extensions: [StarterKit, Underline],
-    content: note.content,
-    onUpdate: ({ editor }) => {
-      const html = editor.getHTML();
-      setNote((prev) => {
-        if (!prev) return prev;
-        return { ...prev, content: html };
-      });
+    extensions: [
+      StarterKit,
+      Underline,
 
-      setDebouncedContent(html);
-    },
+      Collaboration.configure({
+        document: ydoc,
+      }),
+
+      CollaborationCursor.configure({
+        provider,
+        user: {
+          name: user.username,
+          color: "#ff00ff",
+        },
+      }),
+    ],
   });
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      updateNote(noteId, { content: debouncedContent });
-    }, 500);
-
-    return () => clearTimeout(timeout);
-  }, [debouncedContent, noteId]);
-
-  useEffect(() => {
-    if (editor && note.content !== editor.getHTML()) {
-      editor.commands.setContent(note.content);
-    }
-  }, [note.content, editor]);
 
   return (
     <div className="editor-wrapper">
-      {editor && <Toolbar editor={editor} />}
       <EditorContent editor={editor} className="editor-content" />
     </div>
   );
