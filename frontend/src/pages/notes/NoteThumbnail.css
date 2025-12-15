@@ -1,4 +1,4 @@
-.note {
+.note__thumbnail {
   background-color: var(--bg-accent);
   border-radius: 0.8rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -10,13 +10,13 @@
   transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.note:hover {
+.note__thumbnail:hover {
   cursor: pointer;
   transform: scale(1.1);
   background-color: var(--accent-1);
 }
 
-.note__thumbnail {
+.note__thumbnail__img {
   width: 100%;
   aspect-ratio: 1 / 1;
   background-color: #fff;
@@ -25,45 +25,45 @@
   margin-bottom: 1rem;
 }
 
-.note__thumbnail img {
+.note__thumbnail__img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.note__titleCont {
+.note__thumbnail__titleCont {
   display: flex;
   justify-content: space-between;
 }
 
-.note__titleCont span {
+.note__thumbnail__titleCont span {
   font-size: 1.3rem;
   z-index: 9999;
   transition: all 0.1s ease-out;
 }
 
-.note__titleCont span:hover {
+.note__thumbnail__titleCont span:hover {
   color: red;
   transform: scale(1.2);
 }
 
-.note__titleCont__title {
+.note__thumbnail__titleCont__title {
   font-weight: bold;
   font-size: larger;
   margin-bottom: 0.5rem;
 }
 
-.note__description {
+.note__thumbnail__description {
   margin-bottom: 0.5rem;
 }
 
-.note__titleCont__title,
-.note__description {
+.note__thumbnail__titleCont__title,
+.note__thumbnail__description {
   white-space: normal;
 }
 
-.note__time {
+.note__thumbnail__time {
   font-size: small;
   color: var(--text-grey-d);
 }

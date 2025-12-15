@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_socketio import SocketIO
 from datetime import timedelta
-from models import db, User, Note, Permission, Content, Version
+from models import db
 import os
 
 app = Flask(__name__)
@@ -12,7 +12,7 @@ CORS(
     origins=["http://localhost:5173", "http://127.0.0.1:5173"],
     supports_credentials=True,
     allow_headers=["Content-Type", "Authorization"],
-    methods=["GET", "POST", "OPTIONS", "DELETE"]
+    methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH"]
 )
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.sqlite3"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
