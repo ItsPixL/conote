@@ -34,11 +34,12 @@ class Note(db.Model):
     title = db.Column(db.String(50))
     description = db.Column(db.String(250))
     noteType = db.Column(db.String(25))
+    ydoc_state = db.Column(db.LargeBinary, nullable=True) # Tiptap (structured)
+    scene_json = db.Column(JSON, nullable=True) # Excalidraw (unstructured)
     createdTime = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     updatedTime = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     permissions = db.relationship('Permission', backref='note', lazy=True, cascade="all, delete-orphan")
     versions = db.relationship('Version', backref='note', lazy=True, cascade="all, delete-orphan")
-    contents = db.relationship('Content', backref='note', lazy=True, cascade="all, delete-orphan")
 
     def to_dict(self):
         return {
@@ -50,27 +51,7 @@ class Note(db.Model):
             "createdTime": self.createdTime,
             "updatedTime": self.updatedTime
         }
-
-class Content(db.Model):
-    __tablename__ = "contents"
-    id = db.Column(db.Integer, primary_key=True)
-    note_id = db.Column(db.Integer, db.ForeignKey('notes.id'), nullable=False)
-    text = db.Column(db.Text)
-    imageUrl = db.Column(db.String(250))
-    contentType = "text" if text is not None else "image"
-    coordPos = db.Column(JSON) # Order is: [x, y, width, height] (width and height reserved for images)
-    # coordPos = db.Column(ARRAY(db.Float)) 
-
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "noteId": self.note_id,
-            "text": self.text,
-            "imageUrl": self.imageUrl,
-            "contentType": self.contentType,
-            "coordPos": self.coordPos,
-        }
-
+    
 class Permission(db.Model):
     __tablename__ = "permissions"
     id = db.Column(db.Integer, primary_key=True)

@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_socketio import SocketIO
 from datetime import timedelta
-from models import db, User, Note, Permission, Content, Version
+from models import db
 import os
 
 app = Flask(__name__)

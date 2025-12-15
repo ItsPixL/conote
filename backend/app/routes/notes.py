@@ -55,6 +55,7 @@ def get_single_note(note_id):
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).first()
     note = Note.query.filter_by(id=note_id, user_id=user.id).first()
+    print(user.to_dict(), note.to_dict())
 
     validate_errors = validate(user=user, note=note)
     if validate_errors:
@@ -112,13 +113,12 @@ def update_note(note_id):
 
     data = request.get_json()
     note.title = data.get("title", note.title)
-    note.content = data.get("content", note.content)
     note.updatedTime = datetime.now(timezone.utc)
     db.session.commit()
 
     socketio.emit(
         "update_note",
-        {"noteId": note.id, "title": note.title, "content": note.content, "user": user.username},
+        {"noteId": note.id, "title": note.title, "user": user.username},
         room=str(note.id)
     )
 
