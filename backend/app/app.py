@@ -1,10 +1,14 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_socketio import SocketIO
 from datetime import timedelta
 from models import db
 import os
+from gevent import pywsgi 
+from geventwebsocket.handler import WebSocketHandler 
+from geventwebsocket import WebSocketError 
+from ypy_websocket import WebsocketServer
 
 app = Flask(__name__)
 CORS(
@@ -28,10 +32,32 @@ socketio = SocketIO(app)
 db.init_app(app)
 jwt = JWTManager(app)
 
+ws_server = WebsocketServer()
+
+@app.route("/ws/<room>") 
+def collaboration_socket(room): 
+    # Check if this is a WebSocket request 
+    if "wsgi.websocket" not in request.environ: 
+        return jsonify({"success": False, "message": "Only websockets requests are allowed!"}), 400 
+    ws = request.environ["wsgi.websocket"] 
+    try: 
+        yroom = ws_server.get_room(room) 
+        ws_server.serve(ws, yroom) 
+    except WebSocketError: 
+        pass   
+    return ""
+
+
 if __name__ == "__main__":
     from routes import register_bp
     register_bp(app)
     with app.app_context():
         db.create_all()
         print(db.metadata.tables.keys())
-    socketio.run(app, port=8000, debug=True)
+
+    server = pywsgi.WSGIServer(
+        ("0.0.0.0", 8000),
+        app,
+        handler_class=WebSocketHandler
+    )
+    server.serve_forever()

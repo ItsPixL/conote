@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models import User, Note, Permission, Content
+from models import User, Note, Permission
 from datetime import datetime, timezone
 from models import db
 from app import socketio
@@ -55,11 +55,12 @@ def get_single_note(note_id):
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).first()
     note = Note.query.filter_by(id=note_id, user_id=user.id).first()
-    print(user.to_dict(), note.to_dict())
 
     validate_errors = validate(user=user, note=note)
     if validate_errors:
         return jsonify({"success": False, "message": validate_errors["message"]}), validate_errors["status"]
+
+    socketio.emit("join_note", {"noteId": note.id})
 
     return jsonify({
         "success": True,
@@ -96,7 +97,7 @@ def create_note():
         "message": "Note created successfully"
         }), 200
 
-
+# This only updates the metadata of the note...content updates are done via WebSockets
 @notes_bp.route("/<int:note_id>", methods=["PATCH"])
 @jwt_required()
 def update_note(note_id):
@@ -112,12 +113,12 @@ def update_note(note_id):
         return jsonify({"success": False, "message": "Access denied due to insufficient permissions"}), 403
 
     data = request.get_json()
-    note.title = data.get("title", note.title)
+    note.title, note.description = data.get("title", note.title), data.get("description", note.description)
     note.updatedTime = datetime.now(timezone.utc)
     db.session.commit()
 
     socketio.emit(
-        "update_note",
+        "update_note_metadata",
         {"noteId": note.id, "title": note.title, "user": user.username},
         room=str(note.id)
     )
@@ -125,7 +126,7 @@ def update_note(note_id):
     return jsonify({
         "success": True,
         "content": {"note": note.to_dict()},
-        "message": "Note updated successfully"
+        "message": "Note metadata updated successfully"
         }), 200
 
 
