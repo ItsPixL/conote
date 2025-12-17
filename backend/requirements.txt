@@ -11,3 +11,7 @@ PyJWT
 pytest
 boto3
 google.generativeai
+y-py
+gevent
+gevent-websocket
+ypy-websocket
