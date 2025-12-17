@@ -25,7 +25,7 @@ def update_note_metadata(data):
     verify_jwt_in_request()
     user_email = get_jwt_identity()
     emit("update_note_metadata", {"user": user_email, "noteId": data["noteId"], 
-                         "title": data["title"]}, room=data["noteId"])
+                         "title": data["title"], "description": data["description"]}, room=data["noteId"])
 
 
 @socketio.on("share_note")

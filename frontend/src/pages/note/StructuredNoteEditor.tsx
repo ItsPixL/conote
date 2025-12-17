@@ -1,46 +1,34 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-
 import Collaboration from "@tiptap/extension-collaboration";
-import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 
+import { useMemo } from "react";
 import * as Y from "yjs";
 import { WebsocketProvider } from "y-websocket";
 
 export default function StructuredNoteEditor({ noteId, user }: any) {
-  // Create Y.Doc
-  const ydoc = new Y.Doc();
+  if (!user) return null;
 
-  // Connect to backend WebSocket server
-  const provider = new WebsocketProvider(
-    "ws://127.0.0.1:8000/ws", // FOR SHIVANSH
-    noteId,
-    ydoc
-  );
+  const ydoc = useMemo(() => new Y.Doc(), []);
+
+  const provider = useMemo(() => {
+    return new WebsocketProvider(
+      "ws://127.0.0.1:8000",
+      noteId,
+      ydoc
+    );
+  }, [noteId, ydoc]);
+
+  provider.on("status", e => console.log("WS:", e.status))
 
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Underline,
-
       Collaboration.configure({
         document: ydoc,
-      }),
-
-      CollaborationCursor.configure({
-        provider,
-        user: {
-          name: user.username,
-          color: "#ff00ff",
-        },
       }),
     ],
   });
 
-  return (
-    <div className="editor-wrapper">
-      <EditorContent editor={editor} className="editor-content" />
-    </div>
-  );
+  return <EditorContent editor={editor} />;
 }

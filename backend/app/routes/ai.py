@@ -1,4 +1,4 @@
-from flask import Blueprint, Flask, request, jsonify
+from flask import Blueprint, request, jsonify
 import google.generativeai as genai
 import os
 

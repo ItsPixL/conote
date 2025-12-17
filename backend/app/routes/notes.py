@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from models import User, Note, Permission
 from datetime import datetime, timezone
 from models import db
-from app import socketio
+from extensions import socketio
 # from utils.upload_files import upload_file_to_s3
 
 notes_bp = Blueprint("notes", __name__)
@@ -60,7 +60,7 @@ def get_single_note(note_id):
     if validate_errors:
         return jsonify({"success": False, "message": validate_errors["message"]}), validate_errors["status"]
 
-    socketio.emit("join_note", {"noteId": note.id})
+    socketio.emit("join_note", {"noteId": note.id}, room=str(note.id))
 
     return jsonify({
         "success": True,
